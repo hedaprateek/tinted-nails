@@ -119,6 +119,51 @@ centre. Frame a little loose so nothing important sits at the very edge.
 
 ---
 
+## How orders reach you
+
+The order panel at the bottom of the page is a form, not a shop. A customer picks an item,
+shade, shape, length and quantity, types their name and city, and taps **Send order on
+WhatsApp**. That opens WhatsApp on their phone or desktop with the whole order already
+written out, addressed to your number — they just press send.
+
+An order arrives in your chat looking like this:
+
+```
+Hi Tinted Nails — I'd like to order.
+
+Ref: TN-4F2A
+Item: Custom Art Set
+Shade: Cherry Cordial (crème)
+Shape: Almond, medium
+Estimated ₹1,899
+
+Name: Meera
+Deliver to: Hyderabad, 500034
+Note: Need them by the 18th
+
+(Sent from the Tinted Nails website)
+```
+
+The **Ref** code is generated fresh for each visitor, so you can quote it back and both of you
+know which conversation is which.
+
+Things worth knowing:
+
+- **Your WhatsApp is the order book.** Nothing is stored on the site — it has no database.
+  Star or archive chats to keep track. A proper orders dashboard would need a paid backend;
+  for the volume this site will do at the start, WhatsApp is genuinely the better tool.
+- **The customer still presses send.** No message can be sent on their behalf — that is
+  WhatsApp's rule, not a limitation of the site. It also means nobody can spam you through it.
+- **Photos are attached in the chat**, not on the site. The panel asks them to send a picture of
+  their hand flat on a table so you can size them.
+- **Prices in the form come from the Products section.** The dropdown reads the prices straight
+  off the cards above, so change a price in one place and the order form follows.
+- **Until you set your number**, the panel shows a reminder that it isn't set yet. Fill in
+  `whatsapp:` in the `SITE` block and the reminder disappears.
+
+If you'd rather orders arrived as email, or you want them collected in a Google Sheet as well as
+WhatsApp, that's a small addition — ask Prateek.
+
 ## Prices, products and services
 
 These are ordinary text in the page, not in the config block. Search for the price

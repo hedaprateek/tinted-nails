@@ -8,6 +8,7 @@ Single-file static site — `index.html` holds the markup, styles and script. No
 
 - **Live shade card** — tapping any of the ten shades re-tints the whole page: the nails in the tray, the gallery designs, the buttons, the step numbers, the wordmark dot.
 - **Drawn, not photographed** — the five nail shapes and all eight gallery finishes (reverse French, chrome, cat-eye, florals, checkerboard, ombré, glitter, line work) are generated as inline SVG, so every shade renders instantly and nothing depends on stock imagery.
+- **Orders straight to WhatsApp** — the ordering panel builds a running order slip (item, shade, shape, length, quantity, estimate, reference code) and hands it to WhatsApp as a pre-filled message via a `wa.me` deep link. No backend, no database, nothing stored. The item list and prices are read out of the Products section at runtime, so a price is only ever written in one place.
 - Sections: shades, products, services, gallery, shapes & lengths, application steps, reviews, Instagram, wear & care, ordering.
 - Light and dark themes, responsive down to phone widths, respects `prefers-reduced-motion`.
 
