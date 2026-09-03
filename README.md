@@ -11,6 +11,13 @@ Single-file static site — `index.html` holds the markup, styles and script. No
 - Sections: shades, products, services, gallery, shapes & lengths, application steps, reviews, Instagram, wear & care, ordering.
 - Light and dark themes, responsive down to phone widths, respects `prefers-reduced-motion`.
 
+## Making changes
+
+Phone number, Instagram handle, hours, shipping line, reviews and gallery photos all live in one
+`SITE` / `GALLERY` block near the bottom of `index.html` — search the file for `EDIT THIS BLOCK`.
+**[EDITING.md](EDITING.md)** walks through it step by step, including uploading photos from the
+GitHub website with no tools installed.
+
 ## Still to replace
 
 - **WhatsApp number** — `#order` links to `wa.me/910000000000`.

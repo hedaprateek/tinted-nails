@@ -255,7 +255,10 @@ nav a:hover{color:var(--ink);border-bottom-color:var(--shade)}
 .tile-art svg{width:26%;filter:drop-shadow(0 8px 10px rgb(var(--shadow) / var(--shadow-a)))}
 .tile-art svg:nth-child(1){width:23%;transform:rotate(-6deg)}
 .tile-art svg:nth-child(3){width:21%;transform:rotate(6deg)}
-.tile-art img{width:100%;display:block}
+.tile-art.has-photo{padding:0;display:block}
+.tile-art.has-photo img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.insta-cell.has-photo{padding:0;display:block}
+.insta-cell.has-photo img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
 .tile figcaption{padding:14px 16px 16px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .tile .t-name{font-family:var(--display);font-size:18px}
 .tile .t-meta{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
@@ -354,9 +357,16 @@ nav a:hover{color:var(--ink);border-bottom-color:var(--shade)}
 .contacts div{display:grid;gap:4px;padding-bottom:12px;border-bottom:1px solid var(--line-soft)}
 .contacts span{color:var(--muted);font-size:10.5px;letter-spacing:.14em}
 
-footer{padding:34px 0 44px;border-top:1px solid var(--line-soft)}
+footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
 .foot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;
   font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.credit{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:26px;padding-top:20px;border-top:1px solid var(--line-soft);
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+}
+.credit .cdot{width:6px;height:6px;border-radius:50%;background:var(--shade);transition:background .5s ease}
+.credit b{font-weight:500;color:var(--ink)}
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important}
@@ -629,27 +639,12 @@ footer{padding:34px 0 44px;border-top:1px solid var(--line-soft)}
         <div>
           <p class="eyebrow">What people say</p>
           <h2>Reviews</h2>
-          <span class="sample">Sample copy — swap in real customer messages</span>
+          <span class="sample" id="sampleChip">Sample copy — swap in real customer messages</span>
         </div>
-        <p class="note">The words below are placeholders written to show the layout. Replace them with real messages before you share the site widely.</p>
+        <p class="note" id="sampleNote">The words below are placeholders written to show the layout. Replace them with real messages before you share the site widely.</p>
+        <p class="note" id="realNote" hidden>Messages from customers, quoted with their permission.</p>
       </div>
-      <div class="reviews">
-        <article class="review">
-          <p class="stars" aria-label="Five out of five">★★★★★</p>
-          <blockquote>Nine days in, through two flights and a lot of washing up, and not one has lifted.</blockquote>
-          <p class="who"><b>P</b>Placeholder · city</p>
-        </article>
-        <article class="review">
-          <p class="stars" aria-label="Five out of five">★★★★★</p>
-          <blockquote>Sized them once and every set since has fitted straight out of the box. That's the whole thing, really.</blockquote>
-          <p class="who"><b>P</b>Placeholder · city</p>
-        </article>
-        <article class="review">
-          <p class="stars" aria-label="Five out of five">★★★★★</p>
-          <blockquote>Sent a photo of a tile I liked and got it back on ten nails. People ask where I get them done.</blockquote>
-          <p class="who"><b>P</b>Placeholder · city</p>
-        </article>
-      </div>
+      <div class="reviews" id="reviewGrid"></div>
     </div>
   </section>
 
@@ -659,9 +654,9 @@ footer{padding:34px 0 44px;border-top:1px solid var(--line-soft)}
         <div>
           <p class="eyebrow">Instagram</p>
           <h2>New sets go up here first.</h2>
-          <p class="handle">@tintednails</p>
+          <p class="handle" id="instaHandle">@tintednails</p>
         </div>
-        <a class="btn" href="https://instagram.com/">Follow the studio</a>
+        <a class="btn js-insta" href="https://instagram.com/">Follow the studio</a>
       </div>
       <div class="insta-strip" id="instaStrip"></div>
     </section>
@@ -690,14 +685,15 @@ footer{padding:34px 0 44px;border-top:1px solid var(--line-soft)}
         <h2>Send us a shade and a hand.</h2>
         <p>Message us the shade name, the shape and length you want, and a straight-on photo of your hand flat on a table. We'll confirm sizing and post within three days.</p>
         <div class="cta">
-          <a class="btn" href="https://wa.me/910000000000">Order on WhatsApp</a>
-          <a class="btn ghost" href="https://instagram.com/">See the work on Instagram</a>
+          <a class="btn js-wa" href="https://wa.me/910000000000">Order on WhatsApp</a>
+          <a class="btn ghost js-insta" href="https://instagram.com/">See the work on Instagram</a>
         </div>
       </div>
       <div class="contacts">
         <div><span>Currently painting</span><b id="orderShade">Cherry Cordial · almond · medium</b></div>
-        <div><span>Studio hours</span><b>Tue–Sun, 11:00–19:00</b></div>
-        <div><span>Shipping</span><b>All India · 3 days · free over ₹999</b></div>
+        <div><span>Call or WhatsApp</span><b id="cPhone">Add your number</b></div>
+        <div><span>Studio hours</span><b id="cHours">Tue–Sun, 11:00–19:00</b></div>
+        <div><span>Shipping</span><b id="cShipping">All India · 3 days · free over ₹999</b></div>
       </div>
     </div>
   </div>
@@ -709,9 +705,64 @@ footer{padding:34px 0 44px;border-top:1px solid var(--line-soft)}
     <span>Painted in small batches</span>
     <span>© 2026</span>
   </div>
+  <div class="wrap credit">
+    <span class="cdot"></span><span>Stunity Tech — by <b>Prateek</b></span>
+  </div>
 </footer>
 
 <script>
+/* ══════════════════════════════════════════════════════════════════════
+   EDIT THIS BLOCK — everything personal lives here. Nothing below it
+   needs touching. Save the file, commit, and the site updates itself.
+   ══════════════════════════════════════════════════════════════════════ */
+const SITE = {
+
+  /* Country code + number, digits only — no +, spaces or dashes.
+     "919876543210" is a +91 Indian mobile. */
+  whatsapp: "910000000000",
+
+  /* Instagram username without the @ */
+  instagram: "tintednails",
+
+  /* Shown in the ordering panel */
+  phone:    "Add your number",
+  hours:    "Tue–Sun, 11:00–19:00",
+  shipping: "All India · 3 days · free over ₹999",
+
+  /* Real customer messages. Delete the sample ones and add your own —
+     the "sample copy" label on the page disappears by itself once every
+     review here has sample:false. Keep quotes short; two lines reads best. */
+  reviews: [
+    {quote:"Nine days in, through two flights and a lot of washing up, and not one has lifted.",
+     name:"Placeholder", city:"City", stars:5, sample:true},
+    {quote:"Sized them once and every set since has fitted straight out of the box. That's the whole thing, really.",
+     name:"Placeholder", city:"City", stars:5, sample:true},
+    {quote:"Sent a photo of a tile I liked and got it back on ten nails. People ask where I get them done.",
+     name:"Placeholder", city:"City", stars:5, sample:true}
+  ]
+};
+
+/* Gallery. Each tile is drawn from `design` until you add a `photo`.
+   To use your own picture: put the file in the photos/ folder next to
+   this page, then set photo:"photos/your-file.jpg". Square or 4:5
+   portrait crops fit best. Add or delete tiles freely.
+   Designs available: french, chrome, cateye, floral, check, ombre, glitter, line */
+const GALLERY = [
+  {name:"Reverse French", meta:"Almond · medium",  design:"french",  photo:""},
+  {name:"Chrome Mirror",  meta:"Coffin · long",    design:"chrome",  photo:""},
+  {name:"Cat-Eye Velvet", meta:"Almond · long",    design:"cateye",  photo:""},
+  {name:"Micro Floral",   meta:"Squoval · short",  design:"floral",  photo:""},
+  {name:"Checkerboard",   meta:"Squoval · medium", design:"check",   photo:""},
+  {name:"Sunset Ombré",   meta:"Almond · medium",  design:"ombre",   photo:""},
+  {name:"Glitter Fade",   meta:"Stiletto · long",  design:"glitter", photo:""},
+  {name:"Single Line",    meta:"Round · short",    design:"line",    photo:""}
+];
+
+/* ══════════════════════════════════════════════════════════════════════
+   Below here is the machinery. Shades are safe to edit too — name, hex,
+   finish and coats. Everything else can be left alone.
+   ══════════════════════════════════════════════════════════════════════ */
+
 const SHADES = [
   {n:"Cherry Cordial", h:"#D81E4A", f:"Crème",         c:"2 coats"},
   {n:"Coral Spritz",   h:"#FF6A4B", f:"Crème",         c:"2 coats"},
@@ -723,18 +774,6 @@ const SHADES = [
   {n:"Lilac Hour",     h:"#A46BF5", f:"Crème",         c:"2 coats"},
   {n:"Mercury",        h:"#B7BEC6", f:"Chrome powder", c:"1 + powder"},
   {n:"Orchid Ink",     h:"#7A1F6D", f:"Velvet matte",  c:"2 coats"}
-];
-
-/* eight finishes we paint, drawn rather than photographed */
-const DESIGNS = [
-  {n:"Reverse French", m:"Almond · medium",  k:"french"},
-  {n:"Chrome Mirror",  m:"Coffin · long",    k:"chrome"},
-  {n:"Cat-Eye Velvet", m:"Almond · long",    k:"cateye"},
-  {n:"Micro Floral",   m:"Squoval · short",  k:"floral"},
-  {n:"Checkerboard",   m:"Squoval · medium", k:"check"},
-  {n:"Sunset Ombré",   m:"Almond · medium",  k:"ombre"},
-  {n:"Glitter Fade",   m:"Stiletto · long",  k:"glitter"},
-  {n:"Single Line",    m:"Round · short",    k:"line"}
 ];
 
 const D_NAIL = "M50 3c18 18 28 57 26 108 -1 22-12 36-26 36S25 133 24 111C22 60 32 21 50 3Z";
@@ -832,13 +871,43 @@ function onShade(hex){
 
 function paintGallery(hex){
   let id = 0;
-  galleryGrid.innerHTML = DESIGNS.map(d => `
-    <figure class="tile">
-      <div class="tile-art">${nailSVG(d.k, id++, hex)}${nailSVG(d.k, id++, hex)}${nailSVG(d.k, id++, hex)}</div>
-      <figcaption><span class="t-name">${d.n}</span><span class="t-meta">${d.m}</span></figcaption>
-    </figure>`).join("");
-  instaStrip.innerHTML = DESIGNS.slice(0,6).map(d => `
-    <div class="insta-cell">${nailSVG(d.k, id++, hex)}${nailSVG(d.k, id++, hex)}</div>`).join("");
+  galleryGrid.innerHTML = GALLERY.map(d => {
+    const art = d.photo
+      ? `<img src="${d.photo}" alt="${d.name} — ${d.meta}" loading="lazy">`
+      : nailSVG(d.design, id++, hex) + nailSVG(d.design, id++, hex) + nailSVG(d.design, id++, hex);
+    return `<figure class="tile">
+      <div class="tile-art${d.photo ? " has-photo" : ""}">${art}</div>
+      <figcaption><span class="t-name">${d.name}</span><span class="t-meta">${d.meta}</span></figcaption>
+    </figure>`;
+  }).join("");
+
+  instaStrip.innerHTML = GALLERY.slice(0,6).map(d => d.photo
+    ? `<div class="insta-cell has-photo"><img src="${d.photo}" alt="${d.name}" loading="lazy"></div>`
+    : `<div class="insta-cell">${nailSVG(d.design, id++, hex)}${nailSVG(d.design, id++, hex)}</div>`).join("");
+}
+
+function paintReviews(){
+  const anySample = SITE.reviews.some(r => r.sample);
+  document.getElementById("sampleChip").hidden = !anySample;
+  document.getElementById("sampleNote").hidden = !anySample;
+  document.getElementById("realNote").hidden = anySample;
+  document.getElementById("reviewGrid").innerHTML = SITE.reviews.map(r => {
+    const n = Math.max(1, Math.min(5, r.stars || 5));
+    return `<article class="review">
+      <p class="stars" aria-label="${n} out of 5">${"★".repeat(n)}</p>
+      <blockquote>${r.quote}</blockquote>
+      <p class="who"><b>${(r.name || "?").trim().charAt(0).toUpperCase()}</b>${r.name}${r.city ? " · " + r.city : ""}</p>
+    </article>`;
+  }).join("");
+}
+
+function paintContacts(){
+  document.querySelectorAll(".js-wa").forEach(a => a.href = "https://wa.me/" + SITE.whatsapp);
+  document.querySelectorAll(".js-insta").forEach(a => a.href = "https://instagram.com/" + SITE.instagram);
+  document.getElementById("instaHandle").textContent = "@" + SITE.instagram;
+  document.getElementById("cPhone").textContent = SITE.phone;
+  document.getElementById("cHours").textContent = SITE.hours;
+  document.getElementById("cShipping").textContent = SITE.shipping;
 }
 
 function apply(i){
@@ -869,6 +938,8 @@ grid.addEventListener("click", e => {
 });
 
 paintGallery(SHADES[0].h);
+paintReviews();
+paintContacts();
 </script>
 </body>
 </html>
