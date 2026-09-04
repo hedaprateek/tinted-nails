@@ -40,6 +40,8 @@
   --shade:#EE3B62;
   --shade-on-light:#B3113A;
   --shade-on-dark:#FF93AF;
+  --good:#2E8B6B;
+  --bad:#C4485F;
   --shade-text:var(--shade-on-light);
   --btn-bg:var(--shade-on-light);
   --btn-fg:#FFFFFF;
@@ -68,6 +70,8 @@
     --t-lilac:#1F172A;
     --t-sky:#141E2A;
     --t-peach:#2A1D16;
+    --good:#6FD9AE;
+    --bad:#FF8FA0;
     --shade-text:var(--shade-on-dark);
     --btn-bg:var(--shade-on-dark);
     --btn-fg:#25131C;
@@ -89,6 +93,8 @@
   --t-lilac:#1F172A;
   --t-sky:#141E2A;
   --t-peach:#2A1D16;
+  --good:#6FD9AE;
+  --bad:#FF8FA0;
   --shade-text:var(--shade-on-dark);
   --btn-bg:var(--shade-on-dark);
   --btn-fg:#25131C;
@@ -153,12 +159,22 @@ header{
 .mark i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
 nav{display:flex;gap:22px}
 nav a{
-  font-size:14px;letter-spacing:.02em;text-decoration:none;color:var(--muted);
+  font-size:14px;letter-spacing:.02em;text-decoration:none;color:var(--muted);white-space:nowrap;
   padding-bottom:2px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;
 }
 nav a:hover{color:var(--ink);border-bottom-color:var(--shade)}
-@media(max-width:1000px){nav{display:none}}
+@media(max-width:1080px){nav{gap:16px;font-size:13px}}
+/* the page is long — on small screens the nav scrolls sideways rather than vanishing */
+@media(max-width:900px){
+  .bar{height:auto;flex-wrap:wrap;padding-block:12px;gap:12px 18px}
+  .mark{margin-right:0}
+  nav{order:3;width:100%;gap:18px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  .bar .btn{margin-left:auto}
+}
 @media(max-width:420px){.mark i{display:none}}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 
 /* ─────────── buttons ─────────── */
 .btn{
@@ -459,8 +475,155 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
 .credit .cdot{width:6px;height:6px;border-radius:50%;background:var(--shade);transition:background .5s ease}
 .credit b{font-weight:500;color:var(--ink)}
 
+/* ─────────── shade finder ─────────── */
+.finder{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,52px);align-items:start}
+@media(max-width:860px){.finder{grid-template-columns:1fr}}
+.qgroup{display:grid;gap:11px;padding:20px 0;border-bottom:1px solid var(--line)}
+.qgroup:last-of-type{border-bottom:0}
+.qgroup>span{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip-btn{
+  font:inherit;font-size:14.5px;font-weight:300;padding:8px 17px;border-radius:999px;cursor:pointer;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line);
+  transition:background .25s,color .25s,border-color .25s;
+}
+.chip-btn:hover{border-color:var(--shade-text)}
+.chip-btn[aria-pressed="true"]{background:var(--btn-bg);color:var(--btn-fg);border-color:var(--btn-bg)}
+.finder-out{
+  background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  padding:clamp(24px,3vw,32px);display:grid;gap:14px;justify-items:center;text-align:center;
+  box-shadow:0 26px 44px -34px rgb(var(--shadow) / var(--shadow-a));
+}
+.finder-out .fnail{width:58px;filter:drop-shadow(0 8px 10px rgb(var(--shadow) / var(--shadow-a)))}
+.finder-out .fnail svg{width:100%;height:auto;display:block}
+.artist-photo svg,.ba-art svg,.wear-art svg,.occ svg{height:auto}
+.finder-out h3{font-size:32px}
+.finder-out .fmeta{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.finder-out .why{color:var(--muted);font-size:15px;max-width:32ch}
+.finder-out .btn{margin-top:4px}
+
+/* ─────────── occasions ─────────── */
+.occasions{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(10px,1.5vw,18px)}
+@media(max-width:900px){.occasions{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:430px){.occasions{grid-template-columns:1fr}}
+.occ{
+  background:var(--surface);border:1px solid var(--line-soft);border-radius:4px;
+  padding:24px 18px;display:grid;gap:11px;justify-items:center;text-align:center;
+  transition:transform .25s,box-shadow .25s;
+}
+.occ:hover{transform:translateY(-4px);box-shadow:0 24px 38px -28px rgb(var(--shadow) / var(--shadow-a))}
+.occ svg{width:36px;filter:drop-shadow(0 7px 9px rgb(var(--shadow) / var(--shadow-a)))}
+.occ h3{font-size:22px}
+.occ p{font-size:14px;color:var(--muted)}
+.occ .from{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--shade-text)}
+
+/* ─────────── before & after ─────────── */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,20px)}
+@media(max-width:640px){.ba{grid-template-columns:1fr}}
+.ba-panel{margin:0;background:var(--surface);border:1px solid var(--line-soft);border-radius:4px;overflow:hidden}
+.ba-art{display:flex;align-items:flex-end;justify-content:center;gap:9px;padding:38px 20px 32px;background:var(--surface-2)}
+.ba-art svg{width:19%;filter:drop-shadow(0 9px 11px rgb(var(--shadow) / var(--shadow-a)))}
+.ba-art.has-photo{padding:0;display:block}
+.ba-art.has-photo img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.ba-panel figcaption{padding:15px 18px;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.ba-panel .ba-when{font-family:var(--display);font-size:21px}
+.ba-panel .ba-note{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+
+/* ─────────── wear timeline ─────────── */
+.wear{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,20px)}
+@media(max-width:760px){.wear{grid-template-columns:1fr}}
+.wear-card{margin:0;background:var(--surface);border:1px solid var(--line-soft);border-radius:4px;overflow:hidden}
+.wear-art{display:flex;align-items:flex-end;justify-content:center;gap:8px;padding:32px 18px 28px;background:var(--surface-2)}
+.wear-art svg{width:21%;filter:drop-shadow(0 8px 10px rgb(var(--shadow) / var(--shadow-a)))}
+.wear-art.has-photo{padding:0;display:block}
+.wear-art.has-photo img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.wear-card figcaption{padding:18px;display:grid;gap:7px}
+.wear-day{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--shade-text);transition:color .5s ease}
+.wear-card h3{font-size:22px}
+.wear-card p{font-size:14.5px;color:var(--muted)}
+
+/* ─────────── size guide ─────────── */
+.sizeguide{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(24px,4vw,52px);align-items:start}
+@media(max-width:820px){.sizeguide{grid-template-columns:1fr}}
+.sizewrap{overflow-x:auto}
+.sizetable{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:280px}
+.sizetable th,.sizetable td{padding:9px 12px 9px 0;text-align:left;border-bottom:1px solid var(--line-soft);font-size:15px}
+.sizetable th{
+  font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+.sizetable td:first-child{font-family:var(--mono);font-size:13px;color:var(--shade-text);width:4em}
+.ruler{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:clamp(18px,2.5vw,26px);display:grid;gap:14px}
+.ruler svg{max-width:100%;height:auto;display:block}
+.ruler .rtick{stroke:var(--ink);stroke-width:.3;opacity:.75}
+.ruler .rnum{fill:var(--ink);font-family:'DM Mono',monospace;font-size:3.2px;opacity:.8}
+.ruler .rbase{stroke:var(--ink);stroke-width:.4;opacity:.75}
+.howmeasure{display:grid;gap:10px;margin-top:26px;counter-reset:hm}
+.howmeasure li{
+  display:flex;gap:12px;align-items:baseline;font-size:15px;color:var(--muted);
+  list-style:none;
+}
+.howmeasure li::before{
+  counter-increment:hm;content:counter(hm);
+  font-family:var(--mono);font-size:10px;color:var(--shade-text);
+  border:1px solid var(--line);border-radius:50%;
+  width:22px;height:22px;flex:0 0 22px;display:grid;place-items:center;
+}
+
+/* ─────────── artist ─────────── */
+.artist{display:grid;grid-template-columns:.75fr 1.25fr;gap:clamp(24px,4vw,54px);align-items:center}
+@media(max-width:760px){.artist{grid-template-columns:1fr}}
+.artist-photo{
+  background:var(--surface-2);border:1px solid var(--line);border-radius:4px;
+  aspect-ratio:4/5;display:flex;align-items:flex-end;justify-content:center;gap:10px;
+  padding:34px 22px 30px;overflow:hidden;
+}
+.artist-photo svg{width:22%;filter:drop-shadow(0 9px 11px rgb(var(--shadow) / var(--shadow-a)))}
+.artist-photo.has-photo{padding:0;display:block}
+.artist-photo.has-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.artist h2{font-size:clamp(32px,4.6vw,50px);letter-spacing:-.01em;margin:12px 0 16px}
+.artist p{color:var(--muted);max-width:52ch}
+.artist p + p{margin-top:12px}
+.artist-facts{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  margin-top:28px;padding-top:22px;border-top:1px solid var(--line);
+}
+.artist-facts b{font-family:var(--display);font-weight:400;font-size:30px;display:block;line-height:1.1}
+.artist-facts span{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* ─────────── order journey ─────────── */
+.journey{display:grid;grid-template-columns:repeat(5,1fr);gap:20px 0}
+@media(max-width:820px){.journey{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.journey{grid-template-columns:1fr}}
+.leg{position:relative;padding:30px 20px 0 0;display:grid;gap:7px}
+.leg::before{content:"";position:absolute;top:7px;left:0;right:0;height:1px;background:var(--line)}
+.leg:last-child::before{right:20px}
+.leg::after{
+  content:"";position:absolute;top:3px;left:0;width:9px;height:9px;border-radius:50%;
+  background:var(--shade);transition:background .5s ease;
+}
+@media(max-width:520px){.leg::before{display:none}}
+.leg .when{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--shade-text);transition:color .5s ease}
+.leg h3{font-size:21px}
+.leg p{font-size:14.5px;color:var(--muted)}
+
+/* ─────────── do / don't ─────────── */
+.dodont{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2.4vw,26px);margin-bottom:clamp(30px,4vw,46px)}
+@media(max-width:640px){.dodont{grid-template-columns:1fr}}
+.dd{background:var(--surface);border:1px solid var(--line-soft);border-radius:4px;padding:clamp(22px,2.6vw,28px)}
+.dd h3{font-size:23px;margin-bottom:16px}
+.dd ul{list-style:none;margin:0;padding:0;display:grid;gap:11px}
+.dd li{display:flex;gap:11px;align-items:baseline;font-size:15px;color:var(--muted)}
+.dd li::before{font-family:var(--mono);font-size:13px;line-height:1;flex:0 0 auto}
+.dd.do li::before{content:"✓";color:var(--good)}
+.dd.dont li::before{content:"✕";color:var(--bad)}
+
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important}
+}
+@media print{
+  header,footer,.hero,.btn{display:none}
+  .ruler{border:0;padding:0}
 }
 </style>
 </head>
@@ -507,9 +670,10 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     <nav>
       <a href="#shades">Shades</a>
       <a href="#products">Products</a>
-      <a href="#services">Services</a>
+      <a href="#occasions">Occasions</a>
       <a href="#gallery">Gallery</a>
-      <a href="#apply">How it works</a>
+      <a href="#wear">Wear time</a>
+      <a href="#sizes">Sizes</a>
       <a href="#reviews">Reviews</a>
       <a href="#care">Care</a>
     </nav>
@@ -570,6 +734,40 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
+  <section id="finder" class="band-blush">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Shade finder</p>
+          <h2>Not sure which one? Three taps.</h2>
+        </div>
+        <p class="note">A starting point, not a rule — every answer here is something we'd suggest across the counter.</p>
+      </div>
+      <div class="finder">
+        <div>
+          <div class="qgroup">
+            <span>Your skin tone</span>
+            <div class="chips" id="qTone" role="group" aria-label="Skin tone"></div>
+          </div>
+          <div class="qgroup">
+            <span>What they're for</span>
+            <div class="chips" id="qOcc" role="group" aria-label="Occasion"></div>
+          </div>
+          <div class="qgroup">
+            <span>Length you wear</span>
+            <div class="chips" id="qLen" role="group" aria-label="Length"></div>
+          </div>
+        </div>
+        <div class="finder-out" aria-live="polite">
+          <div class="fnail" id="fNail" aria-hidden="true"></div>
+          <p class="fmeta" id="fMeta">Crème · 2 coats</p>
+          <h3 id="fName">Cherry Cordial</h3>
+          <p class="why" id="fWhy">A true red sits well on any skin tone and holds its colour under warm indoor light.</p>
+          <button class="btn" type="button" id="fUse">Put this in my order</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="products" class="band-mint">
     <div class="wrap">
@@ -616,6 +814,18 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
+  <section id="occasions">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">By occasion</p>
+          <h2>Same six products, sorted by the day you need them for.</h2>
+        </div>
+        <p class="note">Most people arrive knowing the event before they know the colour. Start here instead.</p>
+      </div>
+      <div class="occasions" id="occGrid"></div>
+    </div>
+  </section>
 
   <section id="services" class="band-white">
     <div class="wrap">
@@ -676,8 +886,33 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
+  <section id="before-after">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Before &amp; after</p>
+          <h2>Ninety seconds is the whole difference.</h2>
+        </div>
+        <p class="note">No lamp, no soak-off, no appointment. Bare nail on the left, the same hand a minute and a half later on the right.</p>
+      </div>
+      <div class="ba" id="baGrid"></div>
+    </div>
+  </section>
 
-  <section id="shapes" class="band-white">
+  <section id="wear" class="band-sky">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Wear time</p>
+          <h2>The same set on day 1, day 7 and day 14.</h2>
+        </div>
+        <p class="note">Everyone asks how long they really last. This is a glue-on set with clean prep, worn through normal washing up.</p>
+      </div>
+      <div class="wear" id="wearGrid"></div>
+    </div>
+  </section>
+
+  <section id="shapes">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -696,8 +931,45 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
+  <section id="sizes" class="band-butter">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Size guide</p>
+          <h2>Twelve widths. Yours are in here somewhere.</h2>
+        </div>
+        <p class="note">Measure once and you never do it again — we keep your twelve numbers on file after the first order.</p>
+      </div>
+      <div class="sizeguide">
+        <div>
+          <div class="sizewrap">
+            <table class="sizetable">
+              <thead>
+                <tr><th scope="col">Size</th><th scope="col">Width</th><th scope="col">Usually</th></tr>
+              </thead>
+              <tbody id="sizeBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="ruler">
+            <p class="eyebrow">Print at 100% — no scaling, no “fit to page”</p>
+            <svg id="rulerSVG" width="100mm" height="17mm" viewBox="0 0 100 17" role="img"
+                 aria-label="A 100 millimetre ruler for measuring nail width"></svg>
+            <p class="slip-note">Check it before you trust it: the printed strip should measure exactly 10 cm end to end. On screen it won't be true size — print it, or lay a ruler on your nail instead.</p>
+          </div>
+          <ol class="howmeasure">
+            <li>Rest your hand flat and measure each nail at its widest point, across the plate rather than the tip.</li>
+            <li>Read the millimetres off the strip above, or any ruler with a millimetre scale.</li>
+            <li>Between two sizes? Take the smaller one and file the sidewalls — a tip that overhangs will lift.</li>
+            <li>Write the ten numbers down, thumb to little finger, both hands. Send them with your order.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <section id="apply" class="band-butter">
+  <section id="apply" class="band-white">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -716,8 +988,61 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
+  <section id="journey" class="band-mint">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Turnaround</p>
+          <h2>From your message to your door.</h2>
+        </div>
+        <p class="note">So nobody has to ask where their set has got to. Custom art is the long leg — every coat cures before the next one goes on.</p>
+      </div>
+      <div class="journey">
+        <div class="leg">
+          <span class="when">Same day</span>
+          <h3>You message</h3>
+          <p>Your order lands on WhatsApp with the shade, shape and length already written out.</p>
+        </div>
+        <div class="leg">
+          <span class="when">1 day</span>
+          <h3>Sizing confirmed</h3>
+          <p>We size you from a photo of your hand, or post the fitting kit if you'd rather measure.</p>
+        </div>
+        <div class="leg">
+          <span class="when">2–10 days</span>
+          <h3>Painted</h3>
+          <p>Signature sets in two. Custom art takes ten — hand-painted, cured coat by coat.</p>
+        </div>
+        <div class="leg">
+          <span class="when">Next day</span>
+          <h3>Posted</h3>
+          <p>Tracked, boxed in the storage tray, with the glue and prep kit alongside.</p>
+        </div>
+        <div class="leg">
+          <span class="when">2–4 days</span>
+          <h3>At your door</h3>
+          <p>Two days to the metros, three or four everywhere else in India.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <section id="reviews" class="band-sky">
+  <section id="artist" class="band-blush">
+    <div class="wrap">
+      <div class="artist">
+        <div class="artist-photo" id="artistPhoto"></div>
+        <div>
+          <p class="eyebrow">The studio</p>
+          <span class="sample" id="artistChip">Sample copy — write this in your own words</span>
+          <h2 id="artistName">Meet the artist</h2>
+          <div id="artistBody"></div>
+          <div class="artist-facts" id="artistFacts"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews" class="band-peach">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -746,7 +1071,31 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </section>
   </div>
 
-  <section id="care" class="band-peach">
+  <section id="care" class="band-white">
+    <div class="wrap">
+      <div class="dodont">
+        <div class="dd do">
+          <h3>Do</h3>
+          <ul>
+            <li>Wipe every nail with the alcohol pad immediately before you press</li>
+            <li>Hold each tip for a full thirty seconds — count it out</li>
+            <li>Wear gloves for washing up and for cleaning</li>
+            <li>Soak in warm soapy water to take them off</li>
+            <li>Put them back in the tray between wears, not loose in a bag</li>
+          </ul>
+        </div>
+        <div class="dd dont">
+          <h3>Don't</h3>
+          <ul>
+            <li>Don't press onto oily or freshly moisturised nails — nothing holds</li>
+            <li>Don't pry a lifting tip off. Soak it first, always</li>
+            <li>Don't use acetone on the tips; it eats the top coat</li>
+            <li>Don't saw the file back and forth — one direction only</li>
+            <li>Don't sleep in a set that's already lifting at the cuticle</li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="wrap care">
       <div>
         <p class="eyebrow">Wear &amp; care</p>
@@ -755,7 +1104,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
       </div>
       <dl class="qa">
         <div><dt>How do I take them off?</dt><dd>Soak in warm soapy water for ten minutes, then ease a cuticle stick under the edge. Never pry — that's your own nail plate coming with it.</dd></div>
-        <div><dt>Will they fit small nails?</dt><dd>Twelve widths cover 6 mm to 17 mm. If you're between sizes, take the smaller one and file the sidewalls.</dd></div>
+        <div><dt>Will they fit small nails?</dt><dd>Twelve widths cover 7 mm to 16 mm — the full table is in the <a href="#sizes">size guide</a>. If you're between sizes, take the smaller one and file the sidewalls.</dd></div>
         <div><dt>Can I shower and cook in them?</dt><dd>Yes, after the first hour. Wear gloves for washing up — hot water is what loosens glue first.</dd></div>
         <div><dt>What if a nail pops off?</dt><dd>Clean off the old glue with the file, re-glue, hold thirty seconds. Spare glue is in every box.</dd></div>
       </dl>
@@ -879,8 +1228,62 @@ const SITE = {
      name:"Placeholder", city:"City", stars:5, sample:true},
     {quote:"Sent a photo of a tile I liked and got it back on ten nails. People ask where I get them done.",
      name:"Placeholder", city:"City", stars:5, sample:true}
+  ],
+
+  /* Who paints them. Write this in your own words, then set sample:false
+     and the "sample copy" label disappears. photo:"photos/you.jpg" for a
+     portrait — a 4:5 crop of you at the bench is ideal. */
+  artist: {
+    sample: true,
+    photo:  "",
+    name:   "Meet the artist",
+    body: [
+      "Write two or three sentences here about who paints the sets and how you started. People buying small-batch work are buying from a person, so this is worth doing properly.",
+      "Mention where you trained or how you taught yourself, what you like painting most, and what you refuse to rush. Keep it plain — it reads better than anything polished."
+    ],
+    facts: [
+      {n:"6 yrs",   l:"at the bench"},
+      {n:"1,200+",  l:"sets painted"},
+      {n:"48 hrs",  l:"average reply"}
+    ]
+  },
+
+  /* Before & after. Leave blank for the drawn version, or point at photos —
+     the same hand, same crop, same light for both. */
+  beforeAfter: {before:"", after:""},
+
+  /* Day 1 / 7 / 14 of one set. photo:"photos/day-7.jpg" when you have them. */
+  wear: [
+    {day:"Day 1",  title:"Fresh on",     note:"Cuticle line flush, gloss at full shine. Nobody can tell they're press-ons at arm's length.", photo:""},
+    {day:"Day 7",  title:"A week in",    note:"About a millimetre of regrowth showing. No lifting at all if the prep was clean and dry.",     photo:""},
+    {day:"Day 14", title:"Two weeks",    note:"Two millimetres out. This is when we'd soak them off, tidy the nail, and re-glue the same set.", photo:""}
   ]
 };
+
+/* Occasions — the shade shown on each card, by name from the shade card below. */
+const OCCASIONS = [
+  {name:"Everyday", shade:"Milk Glaze",    line:"Short squoval, sheer glaze. Survives a keyboard and a school run.", from:"From ₹649"},
+  {name:"Work",     shade:"Mercury",       line:"Nothing that snags a sleeve. Chrome or bare glaze, filed short.",   from:"From ₹649"},
+  {name:"Party",    shade:"Cherry Cordial",line:"Medium almond in a true red — it reads well in low, warm light.",   from:"From ₹649"},
+  {name:"Wedding",  shade:"Orchid Ink",    line:"Pearl, chrome and crystal work, with five spare tips in the box.",  from:"From ₹2,499"},
+  {name:"On set",   shade:"Cobalt Cure",   line:"Several shades to hand, swapped between frames with no drying.",    from:"Quoted"}
+];
+
+/* Press-on widths, size 0 (widest) to 11. */
+const SIZES = [
+  {s:0,  mm:"16 mm",   use:"Thumb"},
+  {s:1,  mm:"15 mm",   use:"Thumb"},
+  {s:2,  mm:"14 mm",   use:"Thumb · index"},
+  {s:3,  mm:"13 mm",   use:"Index"},
+  {s:4,  mm:"12 mm",   use:"Index · middle"},
+  {s:5,  mm:"11.5 mm", use:"Middle"},
+  {s:6,  mm:"11 mm",   use:"Middle · ring"},
+  {s:7,  mm:"10 mm",   use:"Ring"},
+  {s:8,  mm:"9.5 mm",  use:"Ring"},
+  {s:9,  mm:"9 mm",    use:"Little"},
+  {s:10, mm:"8 mm",    use:"Little"},
+  {s:11, mm:"7 mm",    use:"Little"}
+];
 
 /* Gallery. Each tile is drawn from `design` until you add a `photo`.
    To use your own picture: put the file in the photos/ folder next to
@@ -1047,6 +1450,96 @@ function paintGallery(hex){
     : `<div class="insta-cell">${nailSVG(d.design, id++, hex)}${nailSVG(d.design, id++, hex)}</div>`).join("");
 }
 
+/* A plain nail in one colour, with optional regrowth at the cuticle end.
+   grow is in viewBox units — roughly 8 per week of nail growth. */
+function plainNail(id, hex, grow){
+  const g = grow || 0;
+  return `<svg viewBox="0 0 100 150" aria-hidden="true">
+    <defs><clipPath id="p${id}"><path d="${D_NAIL}"/></clipPath></defs>
+    <g clip-path="url(#p${id})">
+      <rect x="0" y="0" width="100" height="150" fill="${hex}"/>
+      ${g ? `<rect x="0" y="0" width="100" height="${g}" fill="${NUDE}"/>` : ""}
+    </g>
+    <path d="${D_EDGE}" fill="#000" opacity=".10"/>
+    <ellipse cx="40" cy="52" rx="8" ry="30" transform="rotate(-6 40 52)" fill="#fff" opacity="${(0.26 - g*0.008).toFixed(3)}"/>
+    <ellipse cx="62" cy="80" rx="5" ry="34" transform="rotate(4 62 80)" fill="#fff" opacity="${(0.12 - g*0.004).toFixed(3)}"/>
+  </svg>`;
+}
+
+const shadeByName = n => SHADES.find(s => s.n === n) || SHADES[0];
+
+function paintOccasions(){
+  document.getElementById("occGrid").innerHTML = OCCASIONS.map((o,i) => `
+    <article class="occ">
+      ${plainNail(600 + i, shadeByName(o.shade).h, 0)}
+      <h3>${o.name}</h3>
+      <p>${o.line}</p>
+      <span class="from">${o.from}</span>
+    </article>`).join("");
+}
+
+function paintBA(hex){
+  const ba = SITE.beforeAfter;
+  const panel = (photo, art, when, note) => `
+    <figure class="ba-panel">
+      <div class="ba-art${photo ? " has-photo" : ""}">${photo ? `<img src="${photo}" alt="${when}" loading="lazy">` : art}</div>
+      <figcaption><span class="ba-when">${when}</span><span class="ba-note">${note}</span></figcaption>
+    </figure>`;
+  const bare  = [0,1,2].map(i => plainNail(620 + i, NUDE, 0)).join("");
+  const after = [0,1,2].map(i => plainNail(630 + i, hex, 0)).join("");
+  document.getElementById("baGrid").innerHTML =
+    panel(ba.before, bare,  "Before",  "Filed, buffed, wiped") +
+    panel(ba.after,  after, "After",   "90 seconds later");
+}
+
+function paintWear(hex){
+  document.getElementById("wearGrid").innerHTML = SITE.wear.map((w,i) => {
+    const art = [0,1,2].map(k => plainNail(640 + i*3 + k, hex, i * 8)).join("");
+    return `<figure class="wear-card">
+      <div class="wear-art${w.photo ? " has-photo" : ""}">${
+        w.photo ? `<img src="${w.photo}" alt="${w.day}" loading="lazy">` : art}</div>
+      <figcaption>
+        <span class="wear-day">${w.day}</span>
+        <h3>${w.title}</h3>
+        <p>${w.note}</p>
+      </figcaption>
+    </figure>`;
+  }).join("");
+}
+
+function paintSizes(){
+  document.getElementById("sizeBody").innerHTML = SIZES.map(r =>
+    `<tr><td>${r.s}</td><td>${r.mm}</td><td>${r.use}</td></tr>`).join("");
+
+  /* a true-size 100 mm scale: 1 viewBox unit = 1 mm */
+  let t = "";
+  for(let mm = 0; mm <= 100; mm++){
+    const h = mm % 10 === 0 ? 7 : mm % 5 === 0 ? 4.5 : 2.5;
+    t += `<line class="rtick" x1="${mm}" y1="11" x2="${mm}" y2="${11 - h}"/>`;
+    if(mm % 10 === 0) t += `<text class="rnum" x="${mm}" y="15.5" text-anchor="${
+      mm === 0 ? "start" : mm === 100 ? "end" : "middle"}">${mm}</text>`;
+  }
+  document.getElementById("rulerSVG").innerHTML =
+    t + `<line class="rbase" x1="0" y1="11" x2="100" y2="11"/>`;
+}
+
+function paintArtist(){
+  const a = SITE.artist;
+  document.getElementById("artistChip").hidden = !a.sample;
+  document.getElementById("artistName").textContent = a.name;
+  document.getElementById("artistBody").innerHTML = a.body.map(p => `<p>${p}</p>`).join("");
+  document.getElementById("artistFacts").innerHTML = a.facts.map(f =>
+    `<div><b>${f.n}</b><span>${f.l}</span></div>`).join("");
+  const ph = document.getElementById("artistPhoto");
+  if(a.photo){
+    ph.classList.add("has-photo");
+    ph.innerHTML = `<img src="${a.photo}" alt="${a.name}">`;
+  }else{
+    ph.classList.remove("has-photo");
+    ph.innerHTML = [0,1,2,3].map(i => plainNail(660 + i, SHADES[i * 2].h, 0)).join("");
+  }
+}
+
 function paintReviews(){
   const anySample = SITE.reviews.some(r => r.sample);
   document.getElementById("sampleChip").hidden = !anySample;
@@ -1082,9 +1575,72 @@ function apply(i){
   grid.querySelectorAll(".swatch").forEach((b,j) =>
     b.setAttribute("aria-pressed", j === i ? "true" : "false"));
   paintGallery(s.h);
+  paintBA(s.h);
+  paintWear(s.h);
   fShade.value = String(i);          /* keep the order form on the same shade */
   updateSlip();
 }
+
+/* ─────────── shade finder ───────────
+   Three answers narrow to one shade. The picks are opinions, not physics —
+   edit the table freely; each value is a shade name from SHADES. */
+const FINDER = {
+  tone: ["Fair","Medium","Deep","Any"],
+  occasion: ["Everyday","Work","Party","Wedding"],
+  length: ["Short","Medium","Long"]
+};
+const PICKS = {
+  Everyday:{Fair:"Milk Glaze",    Medium:"Bubblegum",    Deep:"Coral Spritz",  Any:"Milk Glaze"},
+  Work:    {Fair:"Milk Glaze",    Medium:"Mercury",      Deep:"Mercury",       Any:"Mercury"},
+  Party:   {Fair:"Cherry Cordial",Medium:"Cobalt Cure",  Deep:"Lilac Hour",    Any:"Cherry Cordial"},
+  Wedding: {Fair:"Milk Glaze",    Medium:"Cherry Cordial",Deep:"Orchid Ink",   Any:"Cherry Cordial"}
+};
+const WHY = {
+  Everyday:"Sheer enough that grow-out never shows a hard line — the one people re-order most.",
+  Work:"Quiet at arm's length across a desk, and short enough to type in without thinking.",
+  Party:"Holds its colour under warm, low light, which is where most photos of them get taken.",
+  Wedding:"Photographs cleanly against fabric and jewellery, and doesn't fight a mehendi hand."
+};
+const SHAPE_FOR = {Short:"Squoval", Medium:"Almond", Long:"Coffin"};
+
+const pick = {tone:"Any", occasion:"Party", length:"Medium"};
+
+function chipRow(el, key, values){
+  el.innerHTML = values.map(v =>
+    `<button class="chip-btn" type="button" role="button" aria-pressed="${v === pick[key]}" data-v="${v}">${v}</button>`).join("");
+  el.addEventListener("click", e => {
+    const b = e.target.closest(".chip-btn");
+    if(!b) return;
+    pick[key] = b.dataset.v;
+    el.querySelectorAll(".chip-btn").forEach(x =>
+      x.setAttribute("aria-pressed", x.dataset.v === pick[key] ? "true" : "false"));
+    paintFinder();
+  });
+}
+
+function finderResult(){
+  const name = PICKS[pick.occasion][pick.tone];
+  const i = SHADES.findIndex(s => s.n === name);
+  return {i, s: SHADES[i < 0 ? 0 : i], shape: SHAPE_FOR[pick.length]};
+}
+
+function paintFinder(){
+  const r = finderResult();
+  document.getElementById("fNail").innerHTML = plainNail(700, r.s.h, 0);
+  document.getElementById("fName").textContent = r.s.n;
+  document.getElementById("fMeta").textContent =
+    r.s.f + " · " + r.shape.toLowerCase() + " · " + pick.length.toLowerCase();
+  document.getElementById("fWhy").textContent = WHY[pick.occasion];
+}
+
+document.getElementById("fUse").addEventListener("click", () => {
+  const r = finderResult();
+  apply(r.i < 0 ? 0 : r.i);
+  fShape.value = r.shape;
+  fLength.value = pick.length;
+  updateSlip();
+  document.getElementById("order").scrollIntoView({behavior:"smooth", block:"start"});
+});
 
 grid.innerHTML = SHADES.map((s,i) => `
   <button class="swatch" type="button" aria-pressed="${i===0}" data-i="${i}">
@@ -1190,9 +1746,17 @@ document.getElementById("copyOrder").addEventListener("click", async e => {
 /* self-clearing reminder while the number is still the placeholder */
 document.getElementById("slipWarn").hidden = SITE.whatsapp !== "910000000000";
 
+chipRow(document.getElementById("qTone"), "tone",     FINDER.tone);
+chipRow(document.getElementById("qOcc"),  "occasion", FINDER.occasion);
+chipRow(document.getElementById("qLen"),  "length",   FINDER.length);
+
+paintFinder();
+paintOccasions();
+paintSizes();
+paintArtist();
 paintReviews();
 paintContacts();
-apply(0);   /* paints the tray, gallery, contrast tokens and order slip */
+apply(0);   /* tray, gallery, before/after, wear, contrast tokens, order slip */
 </script>
 </body>
 </html>

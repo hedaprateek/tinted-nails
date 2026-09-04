@@ -164,6 +164,81 @@ Things worth knowing:
 If you'd rather orders arrived as email, or you want them collected in a Google Sheet as well as
 WhatsApp, that's a small addition — ask Prateek.
 
+## The newer sections
+
+All of these live in the same `SITE` block, or in a short list just below it.
+
+### Meet the artist
+
+```js
+artist: {
+  sample: true,
+  photo:  "",
+  name:   "Meet the artist",
+  body: [ "First paragraph…", "Second paragraph…" ],
+  facts: [ {n:"6 yrs", l:"at the bench"}, … ]
+}
+```
+
+Write the two paragraphs in your own words, put a portrait at `photo:"photos/you.jpg"` (a 4:5
+crop of you at the bench works best), correct the three facts, then set **`sample:false`** and
+the "sample copy" label disappears — same rule as the reviews. Until then the panel shows four
+drawn nails instead of a photo.
+
+### Before & after
+
+```js
+beforeAfter: {before:"", after:""},
+```
+
+Two photos of **the same hand, same crop, same light** — bare on the left, the finished set on
+the right. Leave them blank and the drawn version shows instead.
+
+### Wear time (day 1 / 7 / 14)
+
+```js
+wear: [
+  {day:"Day 1", title:"Fresh on", note:"…", photo:""},
+]
+```
+
+The most convincing section on the page, if you shoot it. Photograph one set on the day you
+apply it, again a week later, again at two weeks. Edit `note` to match what actually happened —
+honest beats glossy here.
+
+### Occasions
+
+```js
+const OCCASIONS = [
+  {name:"Everyday", shade:"Milk Glaze", line:"Short squoval…", from:"From ₹649"},
+];
+```
+
+`shade` must match a name in the `SHADES` list exactly, or the card falls back to the first
+shade. Add or remove cards freely.
+
+### Size guide
+
+```js
+const SIZES = [ {s:0, mm:"16 mm", use:"Thumb"}, … ];
+```
+
+If your tips run to different widths, correct the `mm` column here — the table and the FAQ
+answer both read from it. The printable ruler underneath is drawn to true millimetres and
+prints at real size; it does **not** measure correctly on screen, and the page says so.
+
+### Shade finder
+
+```js
+const PICKS = {
+  Party: {Fair:"Cherry Cordial", Medium:"Cobalt Cure", Deep:"Lilac Hour", Any:"Cherry Cordial"},
+};
+const WHY = { Party:"Holds its colour under warm, low light…" };
+```
+
+These are opinions, not rules — they're your recommendations, so change them to whatever you'd
+actually say across the counter. Every value must be a shade name from `SHADES`.
+
 ## Prices, products and services
 
 These are ordinary text in the page, not in the config block. Search for the price
