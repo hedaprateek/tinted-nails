@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Tinted Nails — hand-painted press-on nail sets. 24 tips in 12 sizes, applied in ninety seconds, worn for up to two weeks.">
-<meta name="theme-color" content="#FFFCFD">
+<meta name="theme-color" content="#FFFAF4">
 <meta property="og:title" content="Tinted Nails">
 <meta property="og:description" content="Hand-painted press-on nail sets. A full set in ninety seconds, at your kitchen table.">
 <meta property="og:type" content="website">
@@ -157,23 +157,34 @@ header{
 .mark .dot{width:9px;height:9px;border-radius:50%;background:var(--shade);transition:background .5s ease;transform:translateY(-1px)}
 .mark b{font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:.01em}
 .mark i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
-nav{display:flex;gap:22px}
-nav a{
-  font-size:14px;letter-spacing:.02em;text-decoration:none;color:var(--muted);white-space:nowrap;
-  padding-bottom:2px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;
-}
-nav a:hover{color:var(--ink);border-bottom-color:var(--shade)}
-@media(max-width:1080px){nav{gap:16px;font-size:13px}}
-/* the page is long — on small screens the nav scrolls sideways rather than vanishing */
-@media(max-width:900px){
-  .bar{height:auto;flex-wrap:wrap;padding-block:12px;gap:12px 18px}
-  .mark{margin-right:0}
-  nav{order:3;width:100%;gap:18px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
-  nav::-webkit-scrollbar{display:none}
-  .bar .btn{margin-left:auto}
-}
+/* the bar is two rows: identity + controls, then the tabs */
+.bar{height:auto;flex-wrap:wrap;padding-block:11px;gap:10px 16px}
 @media(max-width:420px){.mark i{display:none}}
-html{scroll-behavior:smooth;scroll-padding-top:96px}
+
+.tabs{
+  order:3;width:100%;display:flex;gap:4px;
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  font:inherit;font-size:14px;font-weight:400;letter-spacing:.01em;white-space:nowrap;
+  color:var(--muted);background:none;border:0;padding:8px 16px;border-radius:999px;cursor:pointer;
+  transition:color .2s,background .25s;
+}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{color:var(--btn-fg);background:var(--btn-bg)}
+@media(max-width:520px){.tabs button{font-size:13.5px;padding:7px 13px}}
+
+.themes{display:flex;gap:7px;align-items:center}
+.themes button{
+  width:21px;height:21px;border-radius:50%;padding:0;cursor:pointer;
+  border:1px solid var(--line);transition:transform .2s;
+}
+.themes button:hover{transform:scale(1.12)}
+.themes button[aria-pressed="true"]{outline:2px solid var(--shade-text);outline-offset:2px}
+
+.panel{display:block}
+html{scroll-behavior:smooth;scroll-padding-top:118px}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 
 /* ─────────── buttons ─────────── */
@@ -632,20 +643,24 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
 
   /* Paper has one theme. Re-point every token to ink-on-white — all three
      selectors, or the dark-mode block outranks this and prints white on white. */
+  /* !important, because the theme picker sets these same properties inline
+     on :root and an inline custom property outranks any stylesheet rule */
   :root,
   :root:not([data-theme="light"]),
   :root[data-theme="dark"]{
-    --ground:#FFFFFF;  --surface:#FFFFFF; --surface-2:#FFFFFF;
-    --ink:#231018;     --muted:#5E4A55;
-    --line:#C7B4BC;    --line-soft:#E3D6DB;
-    --t-blush:#FFFFFF; --t-mint:#FFFFFF;  --t-butter:#FFFFFF;
-    --t-lilac:#FFFFFF; --t-sky:#FFFFFF;   --t-peach:#FFFFFF;
-    --shade-text:#96143B; --btn-bg:#96143B; --btn-fg:#FFFFFF;
-    --good:#1F6B4F;    --bad:#9B2B3F;
-    --shadow:0 0 0;    --shadow-a:0;
+    --ground:#FFFFFF !important;  --surface:#FFFFFF !important; --surface-2:#FFFFFF !important;
+    --ink:#231018 !important;     --muted:#5E4A55 !important;
+    --line:#C7B4BC !important;    --line-soft:#E3D6DB !important;
+    --t-blush:#FFFFFF !important; --t-mint:#FFFFFF !important;  --t-butter:#FFFFFF !important;
+    --t-lilac:#FFFFFF !important; --t-sky:#FFFFFF !important;   --t-peach:#FFFFFF !important;
+    --shade-text:#96143B !important; --btn-bg:#96143B !important; --btn-fg:#FFFFFF !important;
+    --good:#1F6B4F !important;    --bad:#9B2B3F !important;
+    --shadow:0 0 0 !important;    --shadow-a:0 !important;
   }
   body{background:#FFFFFF;color:var(--ink)}
 
+  /* paper has no tabs — every panel prints, whichever one is open on screen */
+  .panel,.panel[hidden]{display:block !important}
   header,.hero,.btn,.slip-warn,.orderform,.slip .cta,.chips{display:none}
 
   /* sits inside the reserved bottom margin, so it never lands on the copy */
@@ -711,22 +726,14 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
 <header>
   <div class="wrap bar">
     <a class="mark" href="#top"><span class="dot"></span><b>Tinted Nails</b><i>Press-on studio</i></a>
-    <nav>
-      <a href="#shades">Shades</a>
-      <a href="#products">Products</a>
-      <a href="#occasions">Occasions</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#wear">Wear time</a>
-      <a href="#sizes">Sizes</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#care">Care</a>
-    </nav>
+    <div class="themes" id="themeRow" role="group" aria-label="Colour theme"></div>
+    <div class="tabs" role="tablist" id="tabRow" aria-label="Sections"></div>
     <a class="btn small" href="#order">Order a set</a>
   </div>
 </header>
 
 <main id="top">
-  <div class="hero">
+  <div class="hero" data-tab="home">
     <div class="wrap hero-grid">
       <div>
         <p class="eyebrow">Hand-painted press-on nails · small batches</p>
@@ -765,7 +772,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
   </div>
 
 
-  <section id="shades" class="band-white">
+  <section id="shades" class="band-white" data-tab="shades">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -778,7 +785,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="finder" class="band-blush">
+  <section id="finder" class="band-blush" data-tab="shades">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -813,7 +820,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="products" class="band-mint">
+  <section id="products" class="band-mint" data-tab="shop">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -858,7 +865,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="occasions">
+  <section id="occasions" data-tab="home">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -871,7 +878,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="services" class="band-white">
+  <section id="services" class="band-white" data-tab="shop">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -916,7 +923,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
   </section>
 
 
-  <section id="gallery" class="band-lilac">
+  <section id="gallery" class="band-lilac" data-tab="gallery">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -930,7 +937,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="before-after">
+  <section id="before-after" data-tab="gallery">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -943,7 +950,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="wear" class="band-sky">
+  <section id="wear" class="band-sky" data-tab="gallery">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -956,7 +963,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="shapes">
+  <section id="shapes" data-tab="fit">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -975,7 +982,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="sizes" class="band-butter">
+  <section id="sizes" class="band-butter" data-tab="fit">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -1013,7 +1020,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="apply" class="band-white">
+  <section id="apply" class="band-white" data-tab="fit">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -1032,7 +1039,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="journey" class="band-mint">
+  <section id="journey" class="band-mint" data-tab="order">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -1071,7 +1078,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="artist" class="band-blush">
+  <section id="artist" class="band-blush" data-tab="home">
     <div class="wrap">
       <div class="artist">
         <div class="artist-photo" id="artistPhoto"></div>
@@ -1086,7 +1093,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <section id="reviews" class="band-peach">
+  <section id="reviews" class="band-peach" data-tab="home">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -1101,7 +1108,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <div class="wrap">
+  <div class="wrap" data-tab="gallery">
     <section class="insta" id="instagram" style="padding:clamp(26px,4vw,44px)">
       <div class="insta-top">
         <div>
@@ -1115,7 +1122,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </section>
   </div>
 
-  <section id="care" class="band-white">
+  <section id="care" class="band-white" data-tab="fit">
     <div class="wrap">
       <div class="dodont">
         <div class="dd do">
@@ -1155,7 +1162,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
     </div>
   </section>
 
-  <div class="wrap" style="padding-bottom:clamp(56px,8vw,104px)">
+  <div class="wrap" data-tab="order" style="padding-bottom:clamp(56px,8vw,104px)">
     <div class="order" id="order">
       <div>
         <p class="eyebrow">Ordering</p>
@@ -1692,7 +1699,7 @@ document.getElementById("fUse").addEventListener("click", () => {
   fShape.value = r.shape;
   fLength.value = pick.length;
   updateSlip();
-  document.getElementById("order").scrollIntoView({behavior:"smooth", block:"start"});
+  goToSection("order");
 });
 
 grid.innerHTML = SHADES.map((s,i) => `
@@ -1799,6 +1806,153 @@ document.getElementById("copyOrder").addEventListener("click", async e => {
 /* self-clearing reminder while the number is still the placeholder */
 document.getElementById("slipWarn").hidden = SITE.whatsapp !== "910000000000";
 
+/* ─────────── colour themes ───────────
+   Each palette re-points the neutrals and the section washes. The accent is
+   never set here — that comes from whichever lacquer is chosen on the shade
+   card — so a theme only decides what the shade is sitting on. */
+const PALETTES = {
+  warm: {
+    label:"Warm", mode:"light", shade:"Coral Spritz",
+    t:{"--ground":"#FFFAF4","--surface":"#FFFFFF","--surface-2":"#FCEFE1",
+       "--ink":"#3D291D","--muted":"#7E6252","--line":"#EFDCC6","--line-soft":"#F8EDE1",
+       "--t-blush":"#FFF0E4","--t-mint":"#F2F6EA","--t-butter":"#FFF6DD",
+       "--t-lilac":"#FAF0E4","--t-sky":"#F4F1E6","--t-peach":"#FDECDD",
+       "--good":"#2F7A52","--bad":"#B4402F","--shadow":"205 160 120","--shadow-a":".28"}
+  },
+  blush: {
+    label:"Blush", mode:"light", shade:"Cherry Cordial",
+    t:{"--ground":"#FFFCFD","--surface":"#FFFFFF","--surface-2":"#FFF3F7",
+       "--ink":"#4A2A38","--muted":"#8E7080","--line":"#F6E4EA","--line-soft":"#FBF1F4",
+       "--t-blush":"#FFF1F5","--t-mint":"#EEFAF4","--t-butter":"#FFF9E8",
+       "--t-lilac":"#F5F1FF","--t-sky":"#EEF6FF","--t-peach":"#FFF3EC",
+       "--good":"#2E8B6B","--bad":"#C4485F","--shadow":"214 156 176","--shadow-a":".26"}
+  },
+  ember: {
+    label:"Ember", mode:"dark", shade:"Coral Spritz",
+    t:{"--ground":"#1B1310","--surface":"#241A15","--surface-2":"#31241C",
+       "--ink":"#F8EEE4","--muted":"#C2AC9A","--line":"#46342A","--line-soft":"#34261E",
+       "--t-blush":"#2B1D14","--t-mint":"#1C2419","--t-butter":"#2C2416",
+       "--t-lilac":"#291E16","--t-sky":"#1F2119","--t-peach":"#2E2016",
+       "--good":"#7FD6A6","--bad":"#FF9E82","--shadow":"0 0 0","--shadow-a":".5"}
+  },
+  midnight: {
+    label:"Midnight", mode:"dark", shade:"Cherry Cordial",
+    t:{"--ground":"#1E1119","--surface":"#291721","--surface-2":"#36202C",
+       "--ink":"#FBEEF3","--muted":"#C7ACB9","--line":"#482E3C","--line-soft":"#38222E",
+       "--t-blush":"#2A1620","--t-mint":"#14241F","--t-butter":"#2A2214",
+       "--t-lilac":"#1F172A","--t-sky":"#141E2A","--t-peach":"#2A1D16",
+       "--good":"#6FD9AE","--bad":"#FF8FA0","--shadow":"0 0 0","--shadow-a":".5"}
+  }
+};
+
+function setTheme(key, remember){
+  const p = PALETTES[key];
+  if(!p) return;
+  Object.entries(p.t).forEach(([k,v]) => root.style.setProperty(k, v));
+  const dark = p.mode === "dark";
+  root.style.setProperty("--shade-text", dark ? "var(--shade-on-dark)" : "var(--shade-on-light)");
+  root.style.setProperty("--btn-bg",     dark ? "var(--shade-on-dark)" : "var(--shade-on-light)");
+  root.style.setProperty("--btn-fg",     dark ? "#25131C" : "#FFFFFF");
+  root.setAttribute("data-theme", p.mode);
+  document.querySelectorAll("#themeRow button").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.theme === key ? "true" : "false"));
+  if(remember) try{ localStorage.setItem("tn-theme", key); }catch{}
+}
+
+function buildThemes(){
+  document.getElementById("themeRow").innerHTML = Object.entries(PALETTES).map(([k,p]) =>
+    `<button type="button" data-theme="${k}" aria-pressed="false" title="${p.label}"
+      aria-label="${p.label} theme"
+      style="background:linear-gradient(135deg,${p.t["--ground"]} 0 50%,${p.t["--ink"]} 50% 100%)"></button>`).join("");
+  document.getElementById("themeRow").addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if(b) setTheme(b.dataset.theme, true);
+  });
+}
+
+/* ─────────── tabs ───────────
+   Sections stay in one document and in source order; this just files each
+   one into a panel. Print re-shows every panel, so paper keeps the lot. */
+const TABS = [
+  {k:"home",    label:"Home"},
+  {k:"shades",  label:"Shades"},
+  {k:"shop",    label:"Shop"},
+  {k:"gallery", label:"Gallery"},
+  {k:"fit",     label:"Fit & care"},
+  {k:"order",   label:"Order"}
+];
+
+function buildTabs(){
+  const main = document.getElementById("top");
+  document.getElementById("tabRow").innerHTML = TABS.map(t =>
+    `<button type="button" role="tab" id="tab-${t.k}" data-tab="${t.k}"
+      aria-controls="panel-${t.k}" aria-selected="false">${t.label}</button>`).join("");
+
+  TABS.forEach(t => {
+    const panel = document.createElement("div");
+    panel.id = "panel-" + t.k;
+    panel.className = "panel";
+    panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("aria-labelledby", "tab-" + t.k);
+    main.querySelectorAll(`[data-tab="${t.k}"]`).forEach(el => panel.appendChild(el));
+    main.appendChild(panel);
+  });
+
+  const row = document.getElementById("tabRow");
+  row.addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if(b) showTab(b.dataset.tab, true);
+  });
+  row.addEventListener("keydown", e => {
+    const keys = {ArrowRight:1, ArrowLeft:-1};
+    if(!(e.key in keys)) return;
+    const i = TABS.findIndex(t => t.k === current);
+    const next = TABS[(i + keys[e.key] + TABS.length) % TABS.length];
+    showTab(next.k, true);
+    document.getElementById("tab-" + next.k).focus();
+    e.preventDefault();
+  });
+}
+
+let current = TABS[0].k;
+
+function showTab(key, scrollUp){
+  if(!TABS.some(t => t.k === key)) return;
+  current = key;
+  TABS.forEach(t => {
+    document.getElementById("panel-" + t.k).hidden = t.k !== key;
+    const b = document.getElementById("tab-" + t.k);
+    b.setAttribute("aria-selected", t.k === key ? "true" : "false");
+    b.tabIndex = t.k === key ? 0 : -1;
+  });
+  if(scrollUp) window.scrollTo({top:0, behavior:"smooth"});
+}
+
+const tabOf = id => {
+  const el = document.getElementById(id);
+  const panel = el && el.closest(".panel");
+  return panel ? panel.id.replace("panel-", "") : null;
+};
+
+function goToSection(id){
+  const t = tabOf(id);
+  if(!t) return false;
+  showTab(t, false);
+  const el = document.getElementById(id);
+  requestAnimationFrame(() => el.scrollIntoView({behavior:"smooth", block:"start"}));
+  return true;
+}
+
+/* in-page links have to change tab before they scroll */
+document.addEventListener("click", e => {
+  const a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  const id = a.getAttribute("href").slice(1);
+  if(!id) return;
+  if(id === "top"){ e.preventDefault(); showTab(TABS[0].k, true); return; }
+  if(goToSection(id)){ e.preventDefault(); history.replaceState(null, "", "#" + id); }
+});
+
 chipRow(document.getElementById("qTone"), "tone",     FINDER.tone);
 chipRow(document.getElementById("qOcc"),  "occasion", FINDER.occasion);
 chipRow(document.getElementById("qLen"),  "length",   FINDER.length);
@@ -1809,7 +1963,22 @@ paintSizes();
 paintArtist();
 paintReviews();
 paintContacts();
-apply(0);   /* tray, gallery, before/after, wear, contrast tokens, order slip */
+
+buildThemes();
+buildTabs();
+
+let savedTheme = null;
+try{ savedTheme = localStorage.getItem("tn-theme"); }catch{}
+const startTheme = PALETTES[savedTheme] ? savedTheme
+  : (matchMedia("(prefers-color-scheme: dark)").matches ? "ember" : "warm");
+setTheme(startTheme, false);
+
+const startShade = SHADES.findIndex(s => s.n === PALETTES[startTheme].shade);
+apply(startShade < 0 ? 0 : startShade);   /* tray, gallery, before/after, wear, slip */
+
+/* deep links still work: /#sizes opens the tab that holds it */
+const hash = location.hash.slice(1);
+if(!(hash && goToSection(hash))) showTab(TABS[0].k, false);
 </script>
 </body>
 </html>

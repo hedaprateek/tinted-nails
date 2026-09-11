@@ -164,6 +164,61 @@ Things worth knowing:
 If you'd rather orders arrived as email, or you want them collected in a Google Sheet as well as
 WhatsApp, that's a small addition — ask Prateek.
 
+## Tabs — which section sits where
+
+The page is tabbed. Sections still live in one file in normal order; each one carries a
+`data-tab="…"` attribute and the script files it into the right panel when the page loads.
+
+| Tab | Sections |
+| --- | --- |
+| Home | hero, occasions, the artist, reviews |
+| Shades | shade card, shade finder |
+| Shop | products, services |
+| Gallery | gallery, before & after, wear time, Instagram |
+| Fit & care | shapes, size guide, how it works, do/don't, FAQ |
+| Order | turnaround, order form |
+
+**To move a section to a different tab**, change its `data-tab` value — that's the whole job:
+
+```html
+<section id="reviews" class="band-peach" data-tab="home">
+```
+
+Within a tab, sections appear in the order they sit in the file. **To rename a tab or add one**,
+edit the `TABS` list in the script; the `k` value must match the `data-tab` attributes.
+
+Links keep working across tabs — `href="#sizes"` switches to Fit & care and scrolls there, and
+`yoursite.com/#sizes` opens on that tab. **Printing ignores tabs entirely**: every panel prints,
+so a printed copy is still the whole site.
+
+## Colour themes
+
+Four palettes ship, and the visitor's choice is remembered on their own device:
+
+| Theme | |
+| --- | --- |
+| **Warm** | the default — ivory, sand, warm brown ink |
+| Blush | the original pink |
+| Ember | warm, dark |
+| Midnight | the original dark |
+
+Someone whose phone is set to dark mode gets **Ember** on their first visit; everyone else gets
+**Warm**.
+
+A theme only sets the neutrals and the section washes. **It never sets the accent colour** —
+that always comes from whichever lacquer is selected on the shade card, which is the point of
+the site. Each palette does name a `shade:` though, which is the colour the page opens on.
+
+To change a theme's colours, edit its block in `PALETTES` in the script. To make a different one
+the default, change `"warm"` in this line near the bottom:
+
+```js
+: (matchMedia("(prefers-color-scheme: dark)").matches ? "ember" : "warm");
+```
+
+To remove a theme, delete its block from `PALETTES` — the swatches in the header are generated
+from that list, so it disappears from the picker too.
+
 ## The newer sections
 
 All of these live in the same `SITE` block, or in a short list just below it.
