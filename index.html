@@ -463,6 +463,8 @@ html{scroll-behavior:smooth;scroll-padding-top:96px}
 .contacts{display:grid;gap:14px;margin-top:26px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
 .contacts div{display:grid;gap:4px;padding-bottom:12px;border-bottom:1px solid var(--line-soft)}
 .contacts span{color:var(--muted);font-size:10.5px;letter-spacing:.14em}
+/* details that live only in a button's href on screen, spelled out for paper */
+.printonly{display:none}
 
 footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
 .foot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;
@@ -626,8 +628,25 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
    it becomes a running footer: fixed to the page box, it repeats on every
    sheet, and @page reserves the space for it. */
 @media print{
-  @page{margin:14mm 12mm 24mm}
-  header,.hero,.btn,.slip-warn{display:none}
+  @page{margin:14mm 14mm 24mm}
+
+  /* Paper has one theme. Re-point every token to ink-on-white — all three
+     selectors, or the dark-mode block outranks this and prints white on white. */
+  :root,
+  :root:not([data-theme="light"]),
+  :root[data-theme="dark"]{
+    --ground:#FFFFFF;  --surface:#FFFFFF; --surface-2:#FFFFFF;
+    --ink:#231018;     --muted:#5E4A55;
+    --line:#C7B4BC;    --line-soft:#E3D6DB;
+    --t-blush:#FFFFFF; --t-mint:#FFFFFF;  --t-butter:#FFFFFF;
+    --t-lilac:#FFFFFF; --t-sky:#FFFFFF;   --t-peach:#FFFFFF;
+    --shade-text:#96143B; --btn-bg:#96143B; --btn-fg:#FFFFFF;
+    --good:#1F6B4F;    --bad:#9B2B3F;
+    --shadow:0 0 0;    --shadow-a:0;
+  }
+  body{background:#FFFFFF;color:var(--ink)}
+
+  header,.hero,.btn,.slip-warn,.orderform,.slip .cta,.chips{display:none}
 
   /* sits inside the reserved bottom margin, so it never lands on the copy */
   footer{
@@ -644,6 +663,7 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
   .credit b{color:#3a2029}
   .credit .cdot{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 
+  .printonly{display:grid}
   .ruler{border:0;padding:0}
   .ruler svg{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   section{padding:8mm 0;break-inside:avoid}
@@ -1185,6 +1205,8 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
         </form>
 
         <div class="contacts">
+          <div class="printonly"><span>Order on WhatsApp</span><b id="cWa">—</b></div>
+          <div class="printonly"><span>Website</span><b id="cSite">—</b></div>
           <div><span>Call or WhatsApp</span><b id="cPhone">Add your number</b></div>
           <div><span>Studio hours</span><b id="cHours">Tue–Sun, 11:00–19:00</b></div>
           <div><span>Shipping</span><b id="cShipping">All India · 3 days · free over ₹999</b></div>
@@ -1586,6 +1608,13 @@ function paintContacts(){
   document.getElementById("cPhone").textContent = SITE.phone;
   document.getElementById("cHours").textContent = SITE.hours;
   document.getElementById("cShipping").textContent = SITE.shipping;
+
+  /* On paper there are no buttons to tap, so spell the number and the URL out */
+  const d = SITE.whatsapp.replace(/\D/g, "");
+  document.getElementById("cWa").textContent =
+    d.length === 12 && d.startsWith("91") ? `+91 ${d.slice(2,7)} ${d.slice(7)}` : "+" + d;
+  document.getElementById("cSite").textContent =
+    (location.host + location.pathname).replace(/\/index\.html$/, "").replace(/\/$/, "") || "tintednails";
 }
 
 function apply(i){
