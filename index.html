@@ -621,9 +621,33 @@ footer{padding:34px 0 40px;border-top:1px solid var(--line-soft)}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important}
 }
+/* ─────────── print ───────────
+   The footer is the one thing that must survive every rendering, so in print
+   it becomes a running footer: fixed to the page box, it repeats on every
+   sheet, and @page reserves the space for it. */
 @media print{
-  header,footer,.hero,.btn{display:none}
+  @page{margin:14mm 12mm 24mm}
+  header,.hero,.btn,.slip-warn{display:none}
+
+  /* sits inside the reserved bottom margin, so it never lands on the copy */
+  footer{
+    position:fixed;bottom:-16mm;left:0;right:0;
+    padding:3mm 0 0;margin:0;border-top:.3mm solid #b9a3ac;
+    background:#fff;
+  }
+  footer .wrap{padding-inline:0;max-width:none}
+  .foot{gap:6mm;font-size:7.5pt;letter-spacing:.08em;color:#6b5460}
+  .credit{
+    margin-top:2mm;padding-top:2mm;border-top:.2mm solid #e4d4da;
+    font-size:7.5pt;letter-spacing:.14em;color:#6b5460;
+  }
+  .credit b{color:#3a2029}
+  .credit .cdot{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
   .ruler{border:0;padding:0}
+  .ruler svg{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  section{padding:8mm 0;break-inside:avoid}
+  .sizeguide,.dodont,.products,.occasions{break-inside:avoid}
 }
 </style>
 </head>
