@@ -184,7 +184,9 @@ header{
 .themes button[aria-pressed="true"]{outline:2px solid var(--shade-text);outline-offset:2px}
 
 .panel{display:block}
-html{scroll-behavior:smooth;scroll-padding-top:118px}
+/* --headh is measured in the script, so an anchor never lands under the bar
+   however tall it has wrapped to */
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--headh,104px) + 18px)}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 
 /* ─────────── buttons ─────────── */
@@ -2114,10 +2116,29 @@ function enterPanel(){
   setTimeout(() => p.classList.remove("enter"), 1000);
 }
 
-new MutationObserver(() => { movePill(); enterPanel(); })
+/* with six tabs on a narrow screen the strip scrolls sideways, so the
+   selected tab has to be brought into view or it sits off the edge */
+function revealTab(){
+  const b = tabRowEl.querySelector('button[aria-selected="true"]');
+  if(!b) return;
+  const left = b.offsetLeft - (tabRowEl.clientWidth - b.offsetWidth) / 2;
+  tabRowEl.scrollTo({left:Math.max(0, left), behavior:REDUCED ? "auto" : "smooth"});
+}
+
+/* the bar wraps to two rows, and to three on a small phone — measure it
+   rather than guessing, so anchored sections never land underneath it */
+const headEl = document.querySelector("header");
+function measureHead(){
+  root.style.setProperty("--headh", headEl.offsetHeight + "px");
+}
+
+new MutationObserver(() => { movePill(); enterPanel(); revealTab(); })
   .observe(tabRowEl, {subtree:true, attributes:true, attributeFilter:["aria-selected"]});
-addEventListener("resize", movePill);
-if(document.fonts && document.fonts.ready) document.fonts.ready.then(movePill);
+addEventListener("resize", () => { movePill(); measureHead(); });
+if(window.ResizeObserver) new ResizeObserver(measureHead).observe(headEl);
+if(document.fonts && document.fonts.ready)
+  document.fonts.ready.then(() => { movePill(); measureHead(); });
+measureHead();
 
 chipRow(document.getElementById("qTone"), "tone",     FINDER.tone);
 chipRow(document.getElementById("qOcc"),  "occasion", FINDER.occasion);
