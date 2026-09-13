@@ -202,8 +202,8 @@ Four palettes ship, and the visitor's choice is remembered on their own device:
 | Ember | warm, dark |
 | Midnight | the original dark |
 
-Someone whose phone is set to dark mode gets **Ember** on their first visit; everyone else gets
-**Warm**.
+**Everyone gets Warm on their first visit**, dark mode or not. The other three are one tap away
+in the header, and whatever a visitor picks is remembered on their own device.
 
 A theme only sets the neutrals and the section washes. **It never sets the accent colour** —
 that always comes from whichever lacquer is selected on the shade card, which is the point of
@@ -213,11 +213,39 @@ To change a theme's colours, edit its block in `PALETTES` in the script. To make
 the default, change `"warm"` in this line near the bottom:
 
 ```js
-: (matchMedia("(prefers-color-scheme: dark)").matches ? "ember" : "warm");
+const startTheme = PALETTES[savedTheme] ? savedTheme : "warm";
 ```
 
 To remove a theme, delete its block from `PALETTES` — the swatches in the header are generated
 from that list, so it disappears from the picker too.
+
+If you ever change the default again and want existing visitors to see it rather than their
+remembered choice, bump `THEME_KEY` (`"tn-theme-2"` → `"tn-theme-3"`). That retires the old
+saved preference for everybody, once.
+
+## Effects
+
+Six, all of them borrowed from how lacquer actually behaves:
+
+| Where | What |
+| --- | --- |
+| Hero tray | catches the light where the pointer is |
+| Hero tray | a fresh coat sweeps across whenever a shade is applied |
+| Shade card | a drop spreads from the point you touched |
+| Gallery tiles | the three nails fan open on hover |
+| Tab bar | the pill slides between tabs |
+| Order slip | the total counts to its new figure |
+
+Two rules they all follow, worth keeping if you edit them:
+
+- **Anyone who has asked their device to reduce motion gets none of it.** The script checks once
+  (`REDUCED`) and every effect returns early; the CSS has a matching block.
+- **Nothing is ever hidden waiting to animate in.** A newly opened tab settles its sections with
+  a small upward movement, but they're on screen from the first frame — no fade-ins that leave a
+  blank page for a reader, a slow connection, or a link preview.
+
+They live in one clearly marked block near the bottom of the script and in an `effects` section
+of the CSS. **Delete both and the site still works** — that's deliberate. Nothing depends on them.
 
 ## The newer sections
 
