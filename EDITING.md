@@ -1,14 +1,35 @@
 # Editing the site
 
-No tools to install. Everything is one file — `index.html` — and every change you push to `main`
-is live at https://hedaprateek.github.io/tinted-nails/ about a minute later.
+No tools to install. Every change you push to `main` is live at
+https://hedaprateek.github.io/tinted-nails/ about a minute later.
+
+## Which file is which
+
+The site is six pages that share one stylesheet and one script:
+
+| File | The page |
+| --- | --- |
+| `index.html` | Home |
+| `shades.html` | Shades |
+| `shop.html` | Shop |
+| `gallery.html` | Gallery |
+| `fit.html` | Fit & care |
+| `order.html` | Order |
+| `assets/app.js` | **everything you actually edit** — and all the behaviour |
+| `assets/style.css` | every colour, font and spacing |
+| `assets/theme.js` | the four colour palettes |
+| `photos/` | your photographs |
+
+**Almost everything you'll want to change is in `assets/app.js`, not in the pages.** The pages
+hold headings and paragraphs; the script holds your number, your reviews, your prices, your
+shades and your photo list.
 
 ---
 
 ## The easy way: edit on GitHub in your browser
 
 1. Go to <https://github.com/hedaprateek/tinted-nails>
-2. Click **index.html**
+2. Click the file you need — usually **assets** → **app.js**
 3. Click the **pencil icon** (top right of the file)
 4. Make your change
 5. Scroll down, click **Commit changes**
@@ -20,15 +41,15 @@ your browser is showing you the old copy.
 
 ## Where your personal details live
 
-Near the bottom of `index.html` there's a block that starts:
+Near the top of `assets/app.js` there's a block that starts:
 
 ```js
 /* ═══ EDIT THIS BLOCK — everything personal lives here ═══ */
 const SITE = {
 ```
 
-Search the page for `EDIT THIS BLOCK` (`Ctrl + F`) and you'll land on it. Nothing outside this
-block needs touching.
+Search the file for `EDIT THIS BLOCK` (`Ctrl + F`) and you'll land on it. It feeds every page at
+once — change your number here and all six pages have it.
 
 ### Your WhatsApp number
 
@@ -121,7 +142,7 @@ centre. Frame a little loose so nothing important sits at the very edge.
 
 ## How orders reach you
 
-The order panel at the bottom of the page is a form, not a shop. A customer picks an item,
+The panel on the Order page is a form, not a shop. A customer picks an item,
 shade, shape, length and quantity, types their name and city, and taps **Send order on
 WhatsApp**. That opens WhatsApp on their phone or desktop with the whole order already
 written out, addressed to your number — they just press send.
@@ -156,40 +177,35 @@ Things worth knowing:
   WhatsApp's rule, not a limitation of the site. It also means nobody can spam you through it.
 - **Photos are attached in the chat**, not on the site. The panel asks them to send a picture of
   their hand flat on a table so you can size them.
-- **Prices in the form come from the Products section.** The dropdown reads the prices straight
-  off the cards above, so change a price in one place and the order form follows.
+- **Prices in the form come from the catalogue.** Shop and the order dropdown both read the
+  `ITEMS` list in `assets/app.js`, so a price is written once and the two can never disagree.
 - **Until you set your number**, the panel shows a reminder that it isn't set yet. Fill in
   `whatsapp:` in the `SITE` block and the reminder disappears.
 
 If you'd rather orders arrived as email, or you want them collected in a Google Sheet as well as
 WhatsApp, that's a small addition — ask Prateek.
 
-## Tabs — which section sits where
+## Pages — which section sits where
 
-The page is tabbed. Sections still live in one file in normal order; each one carries a
-`data-tab="…"` attribute and the script files it into the right panel when the page loads.
-
-| Tab | Sections |
+| Page | Sections in it |
 | --- | --- |
-| Home | hero, occasions, the artist, reviews |
-| Shades | shade card, shade finder |
-| Shop | products, services |
-| Gallery | gallery, before & after, wear time, Instagram |
-| Fit & care | shapes, size guide, how it works, do/don't, FAQ |
-| Order | turnaround, order form |
+| `index.html` — Home | hero, occasions, the artist, reviews |
+| `shades.html` — Shades | shade card, shade finder |
+| `shop.html` — Shop | products, services |
+| `gallery.html` — Gallery | gallery, before & after, wear time, Instagram |
+| `fit.html` — Fit & care | shapes, size guide, how it works, do/don't, FAQ |
+| `order.html` — Order | turnaround, order form |
 
-**To move a section to a different tab**, change its `data-tab` value — that's the whole job:
+**To move a section to a different page**, cut the whole `<section>…</section>` out of one file
+and paste it into another, inside `<main>`. Sections are self-contained — the script finds
+whatever is on the page and skips the rest — so nothing else needs changing.
 
-```html
-<section id="reviews" class="band-peach" data-tab="home">
-```
+**To add a page**, copy an existing one, replace what's inside `<main>`, and add a link to it in
+the `<nav class="tabs">` block. That nav is repeated in all six files, so add the link to each —
+it's the one thing that isn't shared.
 
-Within a tab, sections appear in the order they sit in the file. **To rename a tab or add one**,
-edit the `TABS` list in the script; the `k` value must match the `data-tab` attributes.
-
-Links keep working across tabs — `href="#sizes"` switches to Fit & care and scrolls there, and
-`yoursite.com/#sizes` opens on that tab. **Printing ignores tabs entirely**: every panel prints,
-so a printed copy is still the whole site.
+Each page is its own URL, so `hedaprateek.github.io/tinted-nails/fit.html` can be sent to
+someone directly, and Google lists them separately.
 
 ## Colour themes
 
@@ -209,19 +225,24 @@ A theme only sets the neutrals and the section washes. **It never sets the accen
 that always comes from whichever lacquer is selected on the shade card, which is the point of
 the site. Each palette does name a `shade:` though, which is the colour the page opens on.
 
-To change a theme's colours, edit its block in `PALETTES` in the script. To make a different one
-the default, change `"warm"` in this line near the bottom:
+The palettes live in their **own file, `assets/theme.js`** — not in `app.js`. That is deliberate:
+it loads in the `<head>` of every page, so a saved theme is applied before anything is drawn.
+Move it to the bottom and someone on Midnight would see a flash of Warm on every single click
+through the site.
+
+To change a theme's colours, edit its block in `PALETTES` there. To make a different one the
+default, change this line in the same file:
 
 ```js
-const startTheme = PALETTES[savedTheme] ? savedTheme : "warm";
+var DEFAULT = "warm";          /* everyone, dark mode included */
 ```
 
 To remove a theme, delete its block from `PALETTES` — the swatches in the header are generated
 from that list, so it disappears from the picker too.
 
 If you ever change the default again and want existing visitors to see it rather than their
-remembered choice, bump `THEME_KEY` (`"tn-theme-2"` → `"tn-theme-3"`). That retires the old
-saved preference for everybody, once.
+remembered choice, bump `KEY` at the top of `theme.js` (`"tn-theme-2"` → `"tn-theme-3"`). That
+retires the old saved preference for everybody, once.
 
 ## Effects
 
@@ -233,16 +254,16 @@ Six, all of them borrowed from how lacquer actually behaves:
 | Hero tray | a fresh coat sweeps across whenever a shade is applied |
 | Shade card | a drop spreads from the point you touched |
 | Gallery tiles | the three nails fan open on hover |
-| Tab bar | the pill slides between tabs |
+| Every page | sections settle in as the page loads |
 | Order slip | the total counts to its new figure |
 
 Two rules they all follow, worth keeping if you edit them:
 
 - **Anyone who has asked their device to reduce motion gets none of it.** The script checks once
   (`REDUCED`) and every effect returns early; the CSS has a matching block.
-- **Nothing is ever hidden waiting to animate in.** A newly opened tab settles its sections with
-  a small upward movement, but they're on screen from the first frame — no fade-ins that leave a
-  blank page for a reader, a slow connection, or a link preview.
+- **Nothing is ever hidden waiting to animate in.** A page settles its sections with a small
+  upward movement, but they're on screen from the first frame — no fade-ins that leave a blank
+  page for a reader, a slow connection, or a link preview.
 
 They live in one clearly marked block near the bottom of the script and in an `effects` section
 of the CSS. **Delete both and the site still works** — that's deliberate. Nothing depends on them.
@@ -322,26 +343,48 @@ const WHY = { Party:"Holds its colour under warm, low light…" };
 These are opinions, not rules — they're your recommendations, so change them to whatever you'd
 actually say across the counter. Every value must be a shade name from `SHADES`.
 
-## Prices, products and services
+## Prices and products
 
-These are ordinary text in the page, not in the config block. Search for the price
-(e.g. `₹649`) or the product name (`Signature Set`) and type over it.
+Both the Shop cards and the order form's dropdown are built from **one list** in
+`assets/app.js`, called `ITEMS`. Change a price there and both follow — they can't drift apart:
 
-Products are in the `<section id="products">` block, services in `<section id="services">`.
-Each product is one `<article class="product">`. Copy one to add another, delete it to remove it.
+```js
+const ITEMS = [
+  {name:"Signature Set", price:649, unit:"24 tips", art:true,
+   desc:"Any shade on the card, painted on your chosen shape and length…"},
+];
+```
+
+- `price` — digits only, no ₹ and no commas. The site formats it.
+- `unit` — the small grey caption under the price.
+- `from: true` — shows "from ₹x" and labels the order total *From* instead of *Estimated*.
+- `art: false` — for kits: the order form then skips shade and shape, which don't apply.
+- `feature: true` and `tag: "Most ordered"` — the highlighted card.
+
+Copy an entry to add a product, delete one to remove it. Mind the commas.
+
+## Services
+
+Services are still ordinary text, in the `<section id="services">` block of **`shop.html`**.
+Each is one `<div class="service">` — copy one to add another, and renumber the `S1`/`S2` markers
+by hand.
 
 ---
 
 ## Shades
 
-The `SHADES` list sits just below `GALLERY`:
+The `SHADES` list sits just below `GALLERY` in `assets/app.js`:
 
 ```js
-{n:"Cherry Cordial", h:"#D81E4A", f:"Crème", c:"2 coats"},
+{n:"Cherry Cordial", h:"#EE3B62", f:"Crème", c:"2 coats"},
 ```
 
 `n` name · `h` hex colour · `f` finish · `c` coats. Changing a hex changes that colour
-everywhere on the page — the nails, the buttons, the gallery designs.
+everywhere on the site — the nails, the buttons, the gallery designs, the occasion cards.
+
+The site works out its own readable version of each colour for text and buttons, so you can
+pick whatever looks right on a nail without worrying about whether a label will still be legible
+on it.
 
 ---
 

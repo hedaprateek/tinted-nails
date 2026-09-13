@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tinted Nails</title>
-<meta name="description" content="Hand-painted press-on nail sets, made to order. 24 tips in 12 sizes, on in ninety seconds, worn for up to two weeks.">
+<title>Shop — Tinted Nails</title>
+<meta name="description" content="Press-on sets, custom art, bridal work, refill kits and sizing kits — with what each one costs.">
 <meta name="theme-color" content="#FFFAF4">
-<meta property="og:title" content="Tinted Nails">
-<meta property="og:description" content="Hand-painted press-on nail sets, made to order. 24 tips in 12 sizes, on in ninety seconds, worn for up to two weeks.">
+<meta property="og:title" content="Shop — Tinted Nails">
+<meta property="og:description" content="Press-on sets, custom art, bridal work, refill kits and sizing kits — with what each one costs.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%92%85</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,9 +58,9 @@
     <div class="themes" id="themeRow" role="group" aria-label="Colour theme"></div>
     <a class="btn small" href="order.html">Order a set</a>
     <nav class="tabs" aria-label="Sections">
-      <a href="index.html" aria-current="page">Home</a>
+      <a href="index.html">Home</a>
       <a href="shades.html">Shades</a>
-      <a href="shop.html">Shop</a>
+      <a href="shop.html" aria-current="page">Shop</a>
       <a href="gallery.html">Gallery</a>
       <a href="fit.html">Fit &amp; care</a>
       <a href="order.html">Order</a>
@@ -69,85 +69,63 @@
 </header>
 
 <main id="top">
-  <div class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <p class="eyebrow">Hand-painted press-on nails · small batches</p>
-        <h1>A full set in <em>ninety seconds</em>, at your kitchen table.</h1>
-        <p class="lede">Every set is painted by hand on soft-gel tips, cured under lamp, and sealed with a high-gloss top coat. Twenty-four tips in twelve widths, so one of them is yours.</p>
-        <div class="cta">
-          <a class="btn" href="shop.html">See the products</a>
-          <a class="btn ghost" href="gallery.html">Browse the gallery</a>
-        </div>
-        <div class="specstrip">
-          <span>24 tips / 12 sizes</span>
-          <span>5–14 day wear</span>
-          <span>Reusable up to 4×</span>
-          <span>Ships in 3 days</span>
-        </div>
-      </div>
-
-      <figure class="tray" style="margin:0">
-        <div class="sheen" aria-hidden="true"></div>
-        <figcaption class="tray-head">
-          <span class="name" id="trayName">Cherry Cordial</span>
-          <span class="eyebrow" id="trayFinish">Crème · 2 coats</span>
-        </figcaption>
-        <div class="fan">
-          <svg class="chip nail" viewBox="0 0 100 150"><use href="#n-almond"></use></svg>
-          <svg class="chip nail" viewBox="0 0 100 150"><use href="#n-almond"></use></svg>
-          <svg class="chip nail" viewBox="0 0 100 150"><use href="#n-almond"></use></svg>
-          <svg class="chip nail" viewBox="0 0 100 150"><use href="#n-almond"></use></svg>
-          <svg class="chip nail" viewBox="0 0 100 150"><use href="#n-almond"></use></svg>
-        </div>
-        <div class="tray-foot">
-          <span>Almond · medium</span>
-          <span id="traySku">Set 01</span>
-        </div>
-      </figure>
-    </div>
-  </div>
-
-  <section id="occasions">
+  <section id="products" class="band-mint">
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <p class="eyebrow">By occasion</p>
-          <h2>Same six products, sorted by the day you need them for.</h2>
+          <p class="eyebrow">What we sell</p>
+          <h2>Products</h2>
         </div>
-        <p class="note">Most people arrive knowing the event before they know the colour. Start here instead.</p>
+        <p class="note">Everything is made to order in the studio. Prices are per set unless noted, and the sizing kit is refunded on your first order.</p>
       </div>
-      <div class="occasions" id="occGrid"></div>
+      <!-- Filled from the ITEMS catalogue in assets/app.js. Shop and the order
+           form both read that one list, so they can never disagree on a price.
+           Edit the products there, not here. -->
+      <div class="products" id="productGrid"></div>
     </div>
   </section>
 
-  <section id="artist" class="band-blush">
-    <div class="wrap">
-      <div class="artist">
-        <div class="artist-photo" id="artistPhoto"></div>
-        <div>
-          <p class="eyebrow">The studio</p>
-          <span class="sample" id="artistChip">Sample copy — write this in your own words</span>
-          <h2 id="artistName">Meet the artist</h2>
-          <div id="artistBody"></div>
-          <div class="artist-facts" id="artistFacts"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="reviews" class="band-peach">
+  <section id="services" class="band-white">
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <p class="eyebrow">What people say</p>
-          <h2>Reviews</h2>
-          <span class="sample" id="sampleChip">Sample copy — swap in real customer messages</span>
+          <p class="eyebrow">What we do</p>
+          <h2>Services</h2>
         </div>
-        <p class="note" id="sampleNote">The words below are placeholders written to show the layout. Replace them with real messages before you share the site widely.</p>
-        <p class="note" id="realNote" hidden>Messages from customers, quoted with their permission.</p>
+        <p class="note">The work around the product: getting the fit right, painting to a brief, and keeping a set wearable long after the first wear.</p>
       </div>
-      <div class="reviews" id="reviewGrid"></div>
+      <div class="services">
+        <div class="service">
+          <span class="s-no">S1</span>
+          <h3>Design commission</h3>
+          <p class="s-desc">Send a reference or a mood. We sketch it over your nail shape, agree the design, then paint it — nothing goes on the tips before you've said yes.</p>
+          <span class="s-turn">10 working days</span>
+        </div>
+        <div class="service">
+          <span class="s-no">S2</span>
+          <h3>Sizing &amp; fitting</h3>
+          <p class="s-desc">A fitting kit in the post, then a short call or a few messages to confirm widths. Your sizes stay on file for every order after.</p>
+          <span class="s-turn">3 days to your door</span>
+        </div>
+        <div class="service">
+          <span class="s-no">S3</span>
+          <h3>Bridal &amp; group orders</h3>
+          <p class="s-desc">Five sets or more, matched or coordinated across the party. One fitting round for everyone, delivered together, boxed and labelled by name.</p>
+          <span class="s-turn">3 weeks, book early</span>
+        </div>
+        <div class="service">
+          <span class="s-no">S4</span>
+          <h3>Repair &amp; re-gloss</h3>
+          <p class="s-desc">Post a worn set back. We lift the old glue, repair chips, re-cure the top coat and return it looking close to new.</p>
+          <span class="s-turn">5 days · ₹299</span>
+        </div>
+        <div class="service">
+          <span class="s-no">S5</span>
+          <h3>Shoot &amp; content sets</h3>
+          <p class="s-desc">Press-ons for photographers, brands and stylists — several shades on set, applied and swapped between shots without any drying time.</p>
+          <span class="s-turn">Quoted per shoot</span>
+        </div>
+      </div>
     </div>
   </section>
 </main>

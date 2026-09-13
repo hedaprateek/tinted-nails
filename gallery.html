@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tinted Nails</title>
-<meta name="description" content="Hand-painted press-on nail sets, made to order. 24 tips in 12 sizes, on in ninety seconds, worn for up to two weeks.">
+<title>Gallery — Tinted Nails</title>
+<meta name="description" content="Eight finishes we paint most often, before and after, and the same set at day 1, 7 and 14.">
 <meta name="theme-color" content="#FFFAF4">
-<meta property="og:title" content="Tinted Nails">
-<meta property="og:description" content="Hand-painted press-on nail sets, made to order. 24 tips in 12 sizes, on in ninety seconds, worn for up to two weeks.">
+<meta property="og:title" content="Gallery — Tinted Nails">
+<meta property="og:description" content="Eight finishes we paint most often, before and after, and the same set at day 1, 7 and 14.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%92%85</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,10 +58,10 @@
     <div class="themes" id="themeRow" role="group" aria-label="Colour theme"></div>
     <a class="btn small" href="order.html">Order a set</a>
     <nav class="tabs" aria-label="Sections">
-      <a href="index.html" aria-current="page">Home</a>
+      <a href="index.html">Home</a>
       <a href="shades.html">Shades</a>
       <a href="shop.html">Shop</a>
-      <a href="gallery.html">Gallery</a>
+      <a href="gallery.html" aria-current="page">Gallery</a>
       <a href="fit.html">Fit &amp; care</a>
       <a href="order.html">Order</a>
     </nav>
@@ -69,87 +69,59 @@
 </header>
 
 <main id="top">
-  <div class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <p class="eyebrow">Hand-painted press-on nails · small batches</p>
-        <h1>A full set in <em>ninety seconds</em>, at your kitchen table.</h1>
-        <p class="lede">Every set is painted by hand on soft-gel tips, cured under lamp, and sealed with a high-gloss top coat. Twenty-four tips in twelve widths, so one of them is yours.</p>
-        <div class="cta">
-          <a class="btn" href="shop.html">See the products</a>
-          <a class="btn ghost" href="gallery.html">Browse the gallery</a>
+  <section id="gallery" class="band-lilac">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">The gallery</p>
+          <h2>Work from the studio bench.</h2>
         </div>
-        <div class="specstrip">
-          <span>24 tips / 12 sizes</span>
-          <span>5–14 day wear</span>
-          <span>Reusable up to 4×</span>
-          <span>Ships in 3 days</span>
-        </div>
+        <p class="note">Eight finishes we paint most often. Every one can be mixed with any shade on the card.</p>
       </div>
-
-      <figure class="tray" style="margin:0">
-        <div class="sheen" aria-hidden="true"></div>
-        <figcaption class="tray-head">
-          <span class="name" id="trayName">Cherry Cordial</span>
-          <span class="eyebrow" id="trayFinish">Crème · 2 coats</span>
-        </figcaption>
-        <div class="fan">
-          <svg class="chip nail" viewBox="0 0 100 150"><use href="#n-almond"></use></svg>
-          <svg class="chip nail" viewBox="0 0 100 150"><use href="#n-almond"></use></svg>
-          <svg class="chip nail" viewBox="0 0 100 150"><use href="#n-almond"></use></svg>
-          <svg class="chip nail" viewBox="0 0 100 150"><use href="#n-almond"></use></svg>
-          <svg class="chip nail" viewBox="0 0 100 150"><use href="#n-almond"></use></svg>
-        </div>
-        <div class="tray-foot">
-          <span>Almond · medium</span>
-          <span id="traySku">Set 01</span>
-        </div>
-      </figure>
+      <!-- To use a real photo, replace the <svg> nails inside a .tile-art with: <img src="photos/your-file.jpg" alt="..."> -->
+      <div class="gallery" id="galleryGrid"></div>
     </div>
+  </section>
+
+  <section id="before-after">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Before &amp; after</p>
+          <h2>Ninety seconds is the whole difference.</h2>
+        </div>
+        <p class="note">No lamp, no soak-off, no appointment. Bare nail on the left, the same hand a minute and a half later on the right.</p>
+      </div>
+      <div class="ba" id="baGrid"></div>
+    </div>
+  </section>
+
+  <section id="wear" class="band-sky">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Wear time</p>
+          <h2>The same set on day 1, day 7 and day 14.</h2>
+        </div>
+        <p class="note">Everyone asks how long they really last. This is a glue-on set with clean prep, worn through normal washing up.</p>
+      </div>
+      <div class="wear" id="wearGrid"></div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="insta" id="instagram" style="padding:clamp(26px,4vw,44px)">
+      <div class="insta-top">
+        <div>
+          <p class="eyebrow">Instagram</p>
+          <h2>New sets go up here first.</h2>
+          <p class="handle" id="instaHandle">@tintednails</p>
+        </div>
+        <a class="btn js-insta" href="https://instagram.com/">Follow the studio</a>
+      </div>
+      <div class="insta-strip" id="instaStrip"></div>
+    </section>
   </div>
-
-  <section id="occasions">
-    <div class="wrap">
-      <div class="sec-head">
-        <div>
-          <p class="eyebrow">By occasion</p>
-          <h2>Same six products, sorted by the day you need them for.</h2>
-        </div>
-        <p class="note">Most people arrive knowing the event before they know the colour. Start here instead.</p>
-      </div>
-      <div class="occasions" id="occGrid"></div>
-    </div>
-  </section>
-
-  <section id="artist" class="band-blush">
-    <div class="wrap">
-      <div class="artist">
-        <div class="artist-photo" id="artistPhoto"></div>
-        <div>
-          <p class="eyebrow">The studio</p>
-          <span class="sample" id="artistChip">Sample copy — write this in your own words</span>
-          <h2 id="artistName">Meet the artist</h2>
-          <div id="artistBody"></div>
-          <div class="artist-facts" id="artistFacts"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="reviews" class="band-peach">
-    <div class="wrap">
-      <div class="sec-head">
-        <div>
-          <p class="eyebrow">What people say</p>
-          <h2>Reviews</h2>
-          <span class="sample" id="sampleChip">Sample copy — swap in real customer messages</span>
-        </div>
-        <p class="note" id="sampleNote">The words below are placeholders written to show the layout. Replace them with real messages before you share the site widely.</p>
-        <p class="note" id="realNote" hidden>Messages from customers, quoted with their permission.</p>
-      </div>
-      <div class="reviews" id="reviewGrid"></div>
-    </div>
-  </section>
 </main>
 
 <footer>
