@@ -736,3 +736,85 @@ if(fShape) try{
     updateSlip();
   }
 }catch{}
+
+
+/* ── Stunity Tech credit card ──────────────────────────────────────────
+   Portals the card to <body> while open: position:fixed alone is not
+   enough, because a transformed ancestor becomes the containing block for
+   fixed descendants. Pointer devices open on hover, touch devices on tap. */
+(function(){
+  var M = 10, GAP = 12, T = null;
+  var fine = !window.matchMedia ||
+             matchMedia("(hover:hover) and (pointer:fine)").matches;
+  var list = document.querySelectorAll(".sc-wrap");
+  if (!list.length) return;
+  function isOpen(w){ return !!w.__scCard && w.__scCard.parentElement === document.body; }
+  function show(w){
+    var c = w.__scCard; if (!c) return;
+    clearTimeout(T);
+    if (c.parentElement !== document.body) document.body.appendChild(c);
+    c.style.position = "fixed"; c.style.bottom = "auto"; c.style.right = "auto";
+    c.style.transform = "none"; c.style.opacity = "1";
+    c.style.visibility = "visible"; c.style.pointerEvents = "auto";
+    c.style.maxWidth = (innerWidth - M * 2) + "px";
+    c.style.left = "0px"; c.style.top = "0px";
+    var t = w.getBoundingClientRect(), r = c.getBoundingClientRect();
+    var x = t.left + t.width / 2 - r.width / 2;
+    x = Math.max(M, Math.min(x, innerWidth - r.width - M));
+    var y = t.top - r.height - GAP, below = false;
+    if (y < M) { y = t.bottom + GAP; below = true; }
+    c.classList.toggle("sc-below", below);
+    c.style.left = Math.round(x) + "px";
+    c.style.top  = Math.round(y) + "px";
+    w.__trigger && w.__trigger.setAttribute("aria-expanded", "true");
+  }
+  function hide(w){
+    var c = w.__scCard; if (!c) return;
+    c.removeAttribute("style"); c.classList.remove("sc-below");
+    if (c.parentElement === document.body) w.appendChild(c);
+    w.__trigger && w.__trigger.setAttribute("aria-expanded", "false");
+  }
+  function hideAll(except){
+    for (var i = 0; i < list.length; i++) if (list[i] !== except) hide(list[i]);
+  }
+  function arm(w){ clearTimeout(T); T = setTimeout(function(){ hide(w); }, 120); }
+  for (var i = 0; i < list.length; i++) (function(w){
+    var c = w.querySelector(".sc-card");
+    var a = w.querySelector(".sc-link");
+    w.__scCard = c; w.__trigger = a;
+    if (a) a.setAttribute("aria-expanded", "false");
+    if (!c) return;
+    if (fine) {
+      w.addEventListener("pointerenter", function(){ show(w); });
+      w.addEventListener("pointerleave", function(){ arm(w); });
+      c.addEventListener("pointerenter", function(){ clearTimeout(T); });
+      c.addEventListener("pointerleave", function(){ arm(w); });
+    } else if (a) {
+      a.addEventListener("click", function(e){
+        if (!isOpen(w)) { e.preventDefault(); hideAll(w); show(w); }
+      });
+      document.addEventListener("click", function(e){
+        if (isOpen(w) && !w.contains(e.target) && !c.contains(e.target)) hide(w);
+      }, true);
+    }
+    w.addEventListener("focusin", function(){ show(w); });
+    w.addEventListener("focusout", function(){
+      setTimeout(function(){
+        if (!w.contains(document.activeElement) && !c.contains(document.activeElement)) hide(w);
+      }, 0);
+    });
+    c.addEventListener("focusin",  function(){ clearTimeout(T); });
+    c.addEventListener("focusout", function(){
+      setTimeout(function(){
+        if (!w.contains(document.activeElement) && !c.contains(document.activeElement)) hide(w);
+      }, 0);
+    });
+  })(list[i]);
+  addEventListener("keydown", function(e){ if (e.key === "Escape") hideAll(null); });
+  addEventListener("scroll", function(){
+    for (var i = 0; i < list.length; i++) if (isOpen(list[i])) show(list[i]);
+  }, {passive:true});
+  addEventListener("resize", function(){
+    for (var i = 0; i < list.length; i++) if (isOpen(list[i])) show(list[i]);
+  });
+})();
